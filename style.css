@@ -1,4 +1,4 @@
-/* CSS Variables for color palette */
+/* CSS Variables for Color Palette & Fonts */
 :root {
     --bg-color: #000;
     --primary-color: #0ff; /* Neon Cyan */
@@ -40,6 +40,12 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--secondary-color);
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .logo:hover {
+    transform: rotate(5deg);
   }
   
   .nav-links {
@@ -97,7 +103,7 @@
     padding: 50px;
   }
   
-  /* Glitch effect on hero heading */
+  /* Glitch Effect for Hero Heading */
   .glitch {
     position: relative;
     font-size: 2.5rem;
@@ -106,24 +112,12 @@
   }
   
   @keyframes glitch {
-    0% {
-      text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color);
-    }
-    20% {
-      text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color);
-    }
-    40% {
-      text-shadow: 2px -2px var(--secondary-color), -2px 2px var(--accent-color);
-    }
-    60% {
-      text-shadow: -2px 2px var(--secondary-color), 2px -2px var(--accent-color);
-    }
-    80% {
-      text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color);
-    }
-    100% {
-      text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color);
-    }
+    0%   { text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color); }
+    20%  { text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color); }
+    40%  { text-shadow: 2px -2px var(--secondary-color), -2px 2px var(--accent-color); }
+    60%  { text-shadow: -2px 2px var(--secondary-color), 2px -2px var(--accent-color); }
+    80%  { text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color); }
+    100% { text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color); }
   }
   
   /* Buttons */
@@ -155,6 +149,7 @@
     gap: 1.5rem;
   }
   
+  /* Project Card & Thumbnail */
   .project-card {
     border: 1px solid var(--accent-color);
     padding: 1rem;
@@ -166,6 +161,17 @@
   .project-card:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px var(--primary-color);
+  }
+  
+  .project-thumbnail {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .project-thumbnail:hover {
+    transform: scale(1.1);
   }
   
   .project-card h3 {
@@ -235,7 +241,7 @@
     }
   }
   
-  /* Fade-in animation for sections */
+  /* Fade-in Animation for Sections */
   .fade-in {
     opacity: 0;
     animation: fadeIn 1s ease-in forwards;
@@ -243,8 +249,38 @@
   }
   
   @keyframes fadeIn {
-    to {
-      opacity: 1;
-    }
+    to { opacity: 1; }
+  }
+  
+  /* Easter Egg Modal */
+  .easter-egg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95);
+    padding: 2rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    text-align: center;
+    z-index: 2000;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .easter-egg p {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+  }
+  
+  /* Initially hidden */
+  .hidden {
+    display: none;
+  }
+  
+  /* Pulse Animation for Easter Egg */
+  @keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(0.9); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+    100% { transform: translate(-50%, -50%) scale(0.9); }
   }
   

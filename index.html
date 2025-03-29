@@ -10,7 +10,7 @@
   <!-- Header & Navigation -->
   <header id="header">
     <nav class="navbar">
-      <div class="logo">Andre Thompson</div>
+      <div class="logo" id="logo">Andre Thompson</div>
       <ul class="nav-links" id="nav-links">
         <li><a href="#home" class="nav-link">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
@@ -21,7 +21,7 @@
     </nav>
   </header>
 
-  <!-- Home Section with Glitch Effect & Background Image -->
+  <!-- Hero Section with Glitch Effect & Background Image -->
   <section id="home" class="section hero">
     <div class="hero-overlay"></div>
     <div class="hero-content fade-in">
@@ -53,8 +53,9 @@
       <div class="projects-grid">
         <!-- Speed Calculation -->
         <div class="project-card">
+          <img src="https://source.unsplash.com/featured/?math" alt="Speed Calculation Thumbnail" class="project-thumbnail">
           <h3>Speed Calculation</h3>
-          <p>A fast-paced mental arithmetic application that challenges your speed and accuracy with real-time calculations.</p>
+          <p>A fast-paced mental arithmetic application that challenges your speed and accuracy.</p>
           <div class="project-links">
             <a href="#" target="_blank">View on GitHub</a>
             <a href="#" target="_blank">Live Demo</a>
@@ -62,8 +63,9 @@
         </div>
         <!-- Password Saver -->
         <div class="project-card">
+          <img src="https://source.unsplash.com/featured/?security" alt="Password Saver Thumbnail" class="project-thumbnail">
           <h3>Password Saver</h3>
-          <p>A secure local password storage solution with backup and restore options, including online upload capabilities.</p>
+          <p>A secure local password storage solution with backup and restore options.</p>
           <div class="project-links">
             <a href="#" target="_blank">View on GitHub</a>
             <a href="#" target="_blank">Live Demo</a>
@@ -71,8 +73,9 @@
         </div>
         <!-- DataStorm -->
         <div class="project-card">
+          <img src="https://source.unsplash.com/featured/?data" alt="DataStorm Thumbnail" class="project-thumbnail">
           <h3>DataStorm</h3>
-          <p>An educational game that blends math and programming challenges in a fast-paced, cyberpunk-inspired environment.</p>
+          <p>An educational game that fuses math and programming challenges in a cyberpunk environment.</p>
           <div class="project-links">
             <a href="#" target="_blank">View on GitHub</a>
             <a href="#" target="_blank">Live Demo</a>
@@ -80,8 +83,9 @@
         </div>
         <!-- PersonalArchive -->
         <div class="project-card">
+          <img src="https://source.unsplash.com/featured/?notes" alt="PersonalArchive Thumbnail" class="project-thumbnail">
           <h3>PersonalArchive</h3>
-          <p>A note-taking program that lets you create 'books' and store your notes for later review in an organized interface.</p>
+          <p>A note-taking program that lets you create 'books' and store your notes for later review.</p>
           <div class="project-links">
             <a href="#" target="_blank">View on GitHub</a>
             <a href="#" target="_blank">Live Demo</a>
@@ -89,8 +93,9 @@
         </div>
         <!-- AcceleratedLearning -->
         <div class="project-card">
+          <img src="https://source.unsplash.com/featured/?brain" alt="AcceleratedLearning Thumbnail" class="project-thumbnail">
           <h3>AcceleratedLearning</h3>
-          <p>A brain training application offering educational content and interactive challenges to boost cognitive skills.</p>
+          <p>A brain training application offering interactive educational content and cognitive challenges.</p>
           <div class="project-links">
             <a href="#" target="_blank">View on GitHub</a>
             <a href="#" target="_blank">Live Demo</a>
@@ -119,12 +124,19 @@
     </div>
   </section>
 
+  <!-- Hidden Easter Egg (Hack Mode) -->
+  <div id="easter-egg" class="easter-egg hidden">
+    <p>Secret Hack Mode Activated!</p>
+  </div>
+
+  <!-- Footer -->
   <footer class="fade-in">
     <p>&copy; 2025 Andre Thompson. All rights reserved.</p>
   </footer>
 
-  <!-- Hidden audio element for hover effects -->
+  <!-- Audio Elements -->
   <audio id="hover-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+  <audio id="easter-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
 
   <script src="script.js"></script>
 </body>

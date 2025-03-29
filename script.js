@@ -34,3 +34,20 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
   });
   
+  // Easter Egg: Toggle hidden hack mode message when logo is clicked
+  const logo = document.getElementById('logo');
+  const easterEgg = document.getElementById('easter-egg');
+  const easterSound = document.getElementById('easter-sound');
+  
+  logo.addEventListener('click', () => {
+    easterEgg.classList.toggle('hidden');
+    easterSound.currentTime = 0;
+    easterSound.play();
+    // Auto-hide the easter egg after 3 seconds if visible
+    if (!easterEgg.classList.contains('hidden')) {
+      setTimeout(() => {
+        easterEgg.classList.add('hidden');
+      }, 3000);
+    }
+  });
+  
