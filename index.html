@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Andre Thompson | Digital Portfolio</title>
+  <title>Andre Thompson | Software Engineer</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Music Control Button -->
@@ -13,10 +16,11 @@
   <!-- Header & Navigation -->
   <header id="header">
     <nav class="navbar">
-      <div class="logo" id="logo">Andre Thompson</div>
+      <div class="logo" id="logo">Andre Thompson <span class="cursor">_</span></div>
       <ul class="nav-links" id="nav-links">
         <li><a href="#home" class="nav-link glitch-text">Home</a></li>
         <li><a href="#about" class="nav-link glitch-text">About</a></li>
+        <li><a href="#skills" class="nav-link glitch-text">Skills</a></li>
         <li><a href="#projects" class="nav-link glitch-text">Projects</a></li>
         <li><a href="#contact" class="nav-link glitch-text">Contact</a></li>
       </ul>
@@ -24,85 +28,324 @@
     </nav>
   </header>
 
+  <!-- Terminal Intro -->
+  <div id="terminal">
+    <div class="terminal-header">
+      <span>terminal.exe</span>
+      <div class="terminal-controls">
+        <span class="terminal-minimize">─</span>
+        <span class="terminal-maximize">□</span>
+        <span class="terminal-close">×</span>
+      </div>
+    </div>
+    <div class="terminal-content">
+      <div class="line">Initializing system... <span class="green">OK</span></div>
+      <div class="line">Loading profile... <span class="green">COMPLETE</span></div>
+      <div class="line">Verifying credentials... <span class="green">AUTHORIZED</span></div>
+      <div class="line">Establishing secure connection... <span class="green">CONNECTED</span></div>
+      <div class="line"><span class="green">root@portfolio:</span><span class="blue">~$</span> <span class="command-text">init portfolio</span></div>
+      <div class="line"><span class="green">Portfolio loaded successfully.</span></div>
+      <div class="line"><span class="green">root@portfolio:</span><span class="blue">~$</span> <span class="command-text">./welcome.sh</span></div>
+    </div>
+  </div>
+
   <!-- Hero Section with Glitch Effect & Background Image -->
   <section id="home" class="section hero">
     <div class="hero-overlay"></div>
+    <div class="corrupted-grid"></div>
     <div class="hero-content fade-in">
       <h1 class="glitch" data-text="Hello, I'm Andre Thompson">Hello, I'm Andre Thompson</h1>
-      <p class="glitch-text">Software Engineer | Crafting efficient and scalable solutions</p>
+      <p class="glitch-text">Software Engineer | <span class="typed-text"></span><span class="cursor">&nbsp;</span></p>
       <a href="#projects" class="btn">View My Work</a>
+    </div>
+    <div class="code-rain-container">
+      <canvas id="code-rain"></canvas>
     </div>
   </section>
 
   <!-- About Section -->
   <section id="about" class="section about fade-in">
     <div class="container">
-      <h2 class="glitch" data-text="About Me">About Me</h2>
-      <p>
-        With over 3 years of professional experience, I specialize in building responsive user interfaces,
-        optimizing web functionality, and writing clean, maintainable code.
-      </p>
-      <p>
-        <strong>Skills:</strong> HTML5, CSS3, JavaScript (ES6+), React/Redux, Angular, Node.js, Express, MongoDB, and more.
-      </p>
-      <a href="Andre_Thompson_Resume.pdf" class="btn" target="_blank">Download Resume</a>
+      <div class="section-header">
+        <h2 class="glitch" data-text="About Me">About Me</h2>
+        <div class="circuit-line"></div>
+      </div>
+      <div class="about-content">
+        <div class="about-text">
+          <p>
+            Software Engineer with <span class="highlight">over three years</span> of professional experience in designing and 
+            implementing user interfaces, enhancing web functionality, and writing efficient and maintainable code.
+          </p>
+          <p>
+            At <span class="highlight">Cricut</span>, I contributed to the Design Space desktop application, achieving a <span class="highlight">50% improvement</span> 
+            in critical component performance and helping onboard 10+ new developers.
+          </p>
+          <p>
+            My background in hardware from <span class="highlight">Geek Squad</span> gives me a holistic understanding of technology 
+            stacks, allowing me to create solutions that maximize both software and hardware capabilities.
+          </p>
+          <a href="Andre_Thompson_Resume.pdf" class="btn btn-download" target="_blank">
+            <span class="btn-icon">⤓</span> Download Resume
+          </a>
+        </div>
+        <div class="about-stats">
+          <div class="stat-container">
+            <div class="stat">
+              <div class="stat-title">Code Quality</div>
+              <div class="stat-bar"><div class="stat-fill" style="width: 95%"></div></div>
+              <div class="stat-value">95%</div>
+            </div>
+            <div class="stat">
+              <div class="stat-title">Problem Solving</div>
+              <div class="stat-bar"><div class="stat-fill" style="width: 92%"></div></div>
+              <div class="stat-value">92%</div>
+            </div>
+            <div class="stat">
+              <div class="stat-title">Team Collaboration</div>
+              <div class="stat-bar"><div class="stat-fill" style="width: 90%"></div></div>
+              <div class="stat-value">90%</div>
+            </div>
+            <div class="stat">
+              <div class="stat-title">Learning Speed</div>
+              <div class="stat-bar"><div class="stat-fill" style="width: 97%"></div></div>
+              <div class="stat-value">97%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section skills fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="glitch" data-text="Technical Skills">Technical Skills</h2>
+        <div class="circuit-line"></div>
+      </div>
+      <div class="skills-container">
+        <div class="skill-category">
+          <h3>Frontend Development</h3>
+          <div class="skill-grid">
+            <div class="skill-item">
+              <div class="skill-name">HTML5</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="95"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">CSS3</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="92"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">JavaScript (ES6+)</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="90"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">React/Redux</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="88"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Angular</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="85"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Backend Development</h3>
+          <div class="skill-grid">
+            <div class="skill-item">
+              <div class="skill-name">Node.js</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="87"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Express</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="85"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">MongoDB</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="82"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Programming Languages</h3>
+          <div class="skill-grid">
+            <div class="skill-item">
+              <div class="skill-name">TypeScript</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="88"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">C#</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="80"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">C++</div>
+              <div class="skill-level">
+                <div class="skill-bar" data-level="75"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Projects Section -->
   <section id="projects" class="section projects fade-in">
     <div class="container">
-      <h2 class="glitch" data-text="Projects">Projects</h2>
+      <div class="section-header">
+        <h2 class="glitch" data-text="Projects">Projects</h2>
+        <div class="circuit-line"></div>
+      </div>
       <div class="projects-grid">
         <!-- Speed Calculation -->
         <div class="project-card">
-          <!-- Using the specific Unsplash image you liked -->
-          <img src="https://source.unsplash.com/egRgs39ojSs" alt="Speed Calculation Thumbnail" class="project-thumbnail">
-          <h3>Speed Calculation</h3>
-          <p>A fast-paced mental arithmetic application that challenges your speed and accuracy.</p>
-          <div class="project-links">
-            <a href="#" target="_blank">View on GitHub</a>
-            <a href="#" target="_blank">Live Demo</a>
+          <div class="project-image">
+            <img src="https://source.unsplash.com/egRgs39ojSs" alt="Speed Calculation Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>HTML5</span>
+                <span>CSS3</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Speed Calculation</h3>
+            <p>A fast-paced mental arithmetic application that challenges your speed and accuracy with real-time calculations.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">&#60;/&#62;</span> View Code
+              </a>
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
           </div>
         </div>
+        
         <!-- Password Saver -->
         <div class="project-card">
-          <img src="https://source.unsplash.com/featured/?security" alt="Password Saver Thumbnail" class="project-thumbnail">
-          <h3>Password Saver</h3>
-          <p>A secure local password storage solution with backup and restore options.</p>
-          <div class="project-links">
-            <a href="#" target="_blank">View on GitHub</a>
-            <a href="#" target="_blank">Live Demo</a>
+          <div class="project-image">
+            <img src="https://source.unsplash.com/featured/?security,digital" alt="Password Saver Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>Electron</span>
+                <span>Node.js</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Password Saver</h3>
+            <p>A secure local password storage solution with backup and restore options, featuring strong encryption and user-friendly interface.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">&#60;/&#62;</span> View Code
+              </a>
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
           </div>
         </div>
+        
         <!-- DataStorm -->
         <div class="project-card">
-          <img src="https://source.unsplash.com/featured/?data" alt="DataStorm Thumbnail" class="project-thumbnail">
-          <h3>DataStorm</h3>
-          <p>An educational game that fuses math and programming challenges in a cyberpunk environment.</p>
-          <div class="project-links">
-            <a href="#" target="_blank">View on GitHub</a>
-            <a href="#" target="_blank">Live Demo</a>
+          <div class="project-image">
+            <img src="https://source.unsplash.com/featured/?data,tech" alt="DataStorm Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>React</span>
+                <span>Redux</span>
+                <span>Canvas API</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>DataStorm</h3>
+            <p>An educational game that fuses math and programming challenges in a cyberpunk environment, promoting logical thinking and coding basics.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">&#60;/&#62;</span> View Code
+              </a>
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
           </div>
         </div>
+        
         <!-- PersonalArchive -->
         <div class="project-card">
-          <img src="https://source.unsplash.com/featured/?notes" alt="PersonalArchive Thumbnail" class="project-thumbnail">
-          <h3>PersonalArchive</h3>
-          <p>A note-taking program that lets you create 'books' and store your notes for later review.</p>
-          <div class="project-links">
-            <a href="#" target="_blank">View on GitHub</a>
-            <a href="#" target="_blank">Live Demo</a>
+          <div class="project-image">
+            <img src="https://source.unsplash.com/featured/?notebook,writing" alt="PersonalArchive Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>React</span>
+                <span>IndexedDB</span>
+                <span>LocalStorage</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>PersonalArchive</h3>
+            <p>A note-taking program that lets you create 'books' and store your notes for later review with powerful search and organization features.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">&#60;/&#62;</span> View Code
+              </a>
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
           </div>
         </div>
+        
         <!-- AcceleratedLearning -->
         <div class="project-card">
-          <img src="https://source.unsplash.com/featured/?brain" alt="AcceleratedLearning Thumbnail" class="project-thumbnail">
-          <h3>AcceleratedLearning</h3>
-          <p>A brain training application offering interactive educational content and cognitive challenges.</p>
-          <div class="project-links">
-            <a href="#" target="_blank">View on GitHub</a>
-            <a href="#" target="_blank">Live Demo</a>
+          <div class="project-image">
+            <img src="https://source.unsplash.com/featured/?brain,education" alt="AcceleratedLearning Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>Canvas API</span>
+                <span>Web Audio</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>AcceleratedLearning</h3>
+            <p>A brain training application offering interactive educational content and cognitive challenges designed to improve memory and focus.</p>
+            <div class="project-links">
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">&#60;/&#62;</span> View Code
+              </a>
+              <a href="#" target="_blank" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -112,45 +355,124 @@
   <!-- Contact Section -->
   <section id="contact" class="section contact fade-in">
     <div class="container">
-      <h2 class="glitch" data-text="Contact Me">Contact Me</h2>
-      <form id="contact-form">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your Name" required>
-        
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Your Email" required>
-        
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-        
-        <button type="submit" class="btn">Send Message</button>
-      </form>
+      <div class="section-header">
+        <h2 class="glitch" data-text="Contact Me">Contact Me</h2>
+        <div class="circuit-line"></div>
+      </div>
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div class="contact-text">
+              <h3>Email</h3>
+              <p><a href="mailto:andrethompsoncs@gmail.com">andrethompsoncs@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📱</div>
+            <div class="contact-text">
+              <h3>Phone</h3>
+              <p><a href="tel:+13852909292">+1 (385) 290-9292</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">💼</div>
+            <div class="contact-text">
+              <h3>LinkedIn</h3>
+              <p><a href="https://www.linkedin.com/in/andre-thompson-slc/" target="_blank">linkedin.com/in/andre-thompson-slc</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">👨‍💻</div>
+            <div class="contact-text">
+              <h3>Location</h3>
+              <p>Salt Lake City, Utah</p>
+            </div>
+          </div>
+        </div>
+        <form id="contact-form" class="contact-form">
+          <div class="form-header">
+            <span class="form-title">Send a Message</span>
+          </div>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <div class="input-container">
+              <input type="text" id="name" name="name" placeholder="Your Name" required>
+              <div class="input-icon">👤</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-container">
+              <input type="email" id="email" name="email" placeholder="Your Email" required>
+              <div class="input-icon">📧</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-submit">
+            <span class="btn-text">Send Message</span>
+            <span class="btn-icon">📤</span>
+          </button>
+        </form>
+      </div>
     </div>
   </section>
 
   <!-- Hidden Easter Egg (Hack Mode) -->
   <div id="easter-egg" class="easter-egg hidden">
-    <p>Secret Hack Mode Activated!</p>
+    <div class="easter-egg-content">
+      <div class="terminal-header">
+        <span>HACK_MODE.exe</span>
+        <div class="terminal-controls">
+          <span class="terminal-close" id="close-easter-egg">×</span>
+        </div>
+      </div>
+      <div class="terminal-content">
+        <div class="line">Initializing <span class="red">HACK MODE</span>...</div>
+        <div class="line">Bypassing security protocols... <span class="green">COMPLETE</span></div>
+        <div class="line">Injecting custom CSS... <span class="green">COMPLETE</span></div>
+        <div class="line"><span class="green">System compromised successfully.</span></div>
+        <div class="line"><span class="green">root@portfolio:</span><span class="blue">~$</span> <span class="command-text">Have a great day!</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- Hacker Dashboard (Fake Busy Elements) -->
-  <div id="hacker-dashboard">
-    <div class="dashboard-item">
-      <h4>Network Load</h4>
-      <div class="meter">
-        <span style="width: 70%;"></span>
-      </div>
+  <div id="hacker-dashboard" class="hacker-dashboard">
+    <div class="dashboard-header">
+      <span class="dashboard-title">System Monitors</span>
+      <span class="dashboard-toggle">▼</span>
     </div>
-    <div class="dashboard-item">
-      <h4>CPU Usage</h4>
-      <div class="meter">
-        <span style="width: 55%;"></span>
+    <div class="dashboard-content">
+      <div class="dashboard-item">
+        <h4>Network Traffic</h4>
+        <div class="meter">
+          <span style="width: 70%;"></span>
+        </div>
       </div>
-    </div>
-    <div class="dashboard-item">
-      <h4>Data Integrity</h4>
-      <div class="meter">
-        <span style="width: 85%;"></span>
+      <div class="dashboard-item">
+        <h4>CPU Usage</h4>
+        <div class="meter">
+          <span style="width: 55%;"></span>
+        </div>
+      </div>
+      <div class="dashboard-item">
+        <h4>Memory Allocation</h4>
+        <div class="meter">
+          <span style="width: 85%;"></span>
+        </div>
+      </div>
+      <div class="dashboard-item">
+        <h4>Quantum Entanglement</h4>
+        <div class="meter">
+          <span style="width: 42%;"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -159,6 +481,7 @@
   <audio id="hover-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
   <audio id="easter-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
   <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop muted></audio>
+  <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-20.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
