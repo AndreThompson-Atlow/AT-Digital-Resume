@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Andre Thompson | Software Engineer</title>
+  <title>Andre Thompson | Digital Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header & Navigation -->
   <header id="header">
     <nav class="navbar">
       <div class="logo">Andre Thompson</div>
@@ -20,15 +21,18 @@
     </nav>
   </header>
 
+  <!-- Home Section with Glitch Effect & Background Image -->
   <section id="home" class="section hero">
-    <div class="hero-content">
-      <h1>Hello, I'm Andre Thompson</h1>
+    <div class="hero-overlay"></div>
+    <div class="hero-content fade-in">
+      <h1 class="glitch" data-text="Hello, I'm Andre Thompson">Hello, I'm Andre Thompson</h1>
       <p>Software Engineer | Crafting efficient and scalable solutions</p>
       <a href="#projects" class="btn">View My Work</a>
     </div>
   </section>
 
-  <section id="about" class="section about">
+  <!-- About Section -->
+  <section id="about" class="section about fade-in">
     <div class="container">
       <h2>About Me</h2>
       <p>
@@ -42,13 +46,51 @@
     </div>
   </section>
 
-  <section id="projects" class="section projects">
+  <!-- Projects Section -->
+  <section id="projects" class="section projects fade-in">
     <div class="container">
       <h2>Projects</h2>
       <div class="projects-grid">
+        <!-- Speed Calculation -->
         <div class="project-card">
-          <h3>Project Name</h3>
-          <p>Short description of the project highlighting key technologies and purpose.</p>
+          <h3>Speed Calculation</h3>
+          <p>A fast-paced mental arithmetic application that challenges your speed and accuracy with real-time calculations.</p>
+          <div class="project-links">
+            <a href="#" target="_blank">View on GitHub</a>
+            <a href="#" target="_blank">Live Demo</a>
+          </div>
+        </div>
+        <!-- Password Saver -->
+        <div class="project-card">
+          <h3>Password Saver</h3>
+          <p>A secure local password storage solution with backup and restore options, including online upload capabilities.</p>
+          <div class="project-links">
+            <a href="#" target="_blank">View on GitHub</a>
+            <a href="#" target="_blank">Live Demo</a>
+          </div>
+        </div>
+        <!-- DataStorm -->
+        <div class="project-card">
+          <h3>DataStorm</h3>
+          <p>An educational game that blends math and programming challenges in a fast-paced, cyberpunk-inspired environment.</p>
+          <div class="project-links">
+            <a href="#" target="_blank">View on GitHub</a>
+            <a href="#" target="_blank">Live Demo</a>
+          </div>
+        </div>
+        <!-- PersonalArchive -->
+        <div class="project-card">
+          <h3>PersonalArchive</h3>
+          <p>A note-taking program that lets you create 'books' and store your notes for later review in an organized interface.</p>
+          <div class="project-links">
+            <a href="#" target="_blank">View on GitHub</a>
+            <a href="#" target="_blank">Live Demo</a>
+          </div>
+        </div>
+        <!-- AcceleratedLearning -->
+        <div class="project-card">
+          <h3>AcceleratedLearning</h3>
+          <p>A brain training application offering educational content and interactive challenges to boost cognitive skills.</p>
           <div class="project-links">
             <a href="#" target="_blank">View on GitHub</a>
             <a href="#" target="_blank">Live Demo</a>
@@ -58,7 +100,8 @@
     </div>
   </section>
 
-  <section id="contact" class="section contact">
+  <!-- Contact Section -->
+  <section id="contact" class="section contact fade-in">
     <div class="container">
       <h2>Contact Me</h2>
       <form id="contact-form">
@@ -76,9 +119,12 @@
     </div>
   </section>
 
-  <footer>
+  <footer class="fade-in">
     <p>&copy; 2025 Andre Thompson. All rights reserved.</p>
   </footer>
+
+  <!-- Hidden audio element for hover effects -->
+  <audio id="hover-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
 
   <script src="script.js"></script>
 </body>

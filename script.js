@@ -1,3 +1,4 @@
+// Smooth Scrolling for Navigation Links
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
@@ -9,6 +10,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
   });
   
+  // Mobile Menu Toggle
   const menuToggle = document.getElementById('menu-toggle');
   const navLinks = document.getElementById('nav-links');
   
@@ -16,9 +18,19 @@ document.querySelectorAll('.nav-link').forEach(link => {
     navLinks.classList.toggle('active');
   });
   
+  // Contact Form Submission
   document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     alert('Thank you for reaching out! I will get back to you soon.');
     this.reset();
+  });
+  
+  // Play sound on project card hover
+  const hoverSound = document.getElementById('hover-sound');
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+    });
   });
   
