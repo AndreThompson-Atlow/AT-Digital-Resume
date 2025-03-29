@@ -7,15 +7,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Music Control Button -->
+  <div id="music-control">Unmute Music</div>
+
   <!-- Header & Navigation -->
   <header id="header">
     <nav class="navbar">
       <div class="logo" id="logo">Andre Thompson</div>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#home" class="nav-link">Home</a></li>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#home" class="nav-link glitch-text">Home</a></li>
+        <li><a href="#about" class="nav-link glitch-text">About</a></li>
+        <li><a href="#projects" class="nav-link glitch-text">Projects</a></li>
+        <li><a href="#contact" class="nav-link glitch-text">Contact</a></li>
       </ul>
       <div class="menu-toggle" id="menu-toggle">&#9776;</div>
     </nav>
@@ -26,7 +29,7 @@
     <div class="hero-overlay"></div>
     <div class="hero-content fade-in">
       <h1 class="glitch" data-text="Hello, I'm Andre Thompson">Hello, I'm Andre Thompson</h1>
-      <p>Software Engineer | Crafting efficient and scalable solutions</p>
+      <p class="glitch-text">Software Engineer | Crafting efficient and scalable solutions</p>
       <a href="#projects" class="btn">View My Work</a>
     </div>
   </section>
@@ -34,7 +37,7 @@
   <!-- About Section -->
   <section id="about" class="section about fade-in">
     <div class="container">
-      <h2>About Me</h2>
+      <h2 class="glitch" data-text="About Me">About Me</h2>
       <p>
         With over 3 years of professional experience, I specialize in building responsive user interfaces,
         optimizing web functionality, and writing clean, maintainable code.
@@ -49,11 +52,12 @@
   <!-- Projects Section -->
   <section id="projects" class="section projects fade-in">
     <div class="container">
-      <h2>Projects</h2>
+      <h2 class="glitch" data-text="Projects">Projects</h2>
       <div class="projects-grid">
         <!-- Speed Calculation -->
         <div class="project-card">
-          <img src="https://source.unsplash.com/featured/?math" alt="Speed Calculation Thumbnail" class="project-thumbnail">
+          <!-- Using the specific Unsplash image you liked -->
+          <img src="https://source.unsplash.com/egRgs39ojSs" alt="Speed Calculation Thumbnail" class="project-thumbnail">
           <h3>Speed Calculation</h3>
           <p>A fast-paced mental arithmetic application that challenges your speed and accuracy.</p>
           <div class="project-links">
@@ -108,7 +112,7 @@
   <!-- Contact Section -->
   <section id="contact" class="section contact fade-in">
     <div class="container">
-      <h2>Contact Me</h2>
+      <h2 class="glitch" data-text="Contact Me">Contact Me</h2>
       <form id="contact-form">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" placeholder="Your Name" required>
@@ -129,14 +133,32 @@
     <p>Secret Hack Mode Activated!</p>
   </div>
 
-  <!-- Footer -->
-  <footer class="fade-in">
-    <p>&copy; 2025 Andre Thompson. All rights reserved.</p>
-  </footer>
+  <!-- Hacker Dashboard (Fake Busy Elements) -->
+  <div id="hacker-dashboard">
+    <div class="dashboard-item">
+      <h4>Network Load</h4>
+      <div class="meter">
+        <span style="width: 70%;"></span>
+      </div>
+    </div>
+    <div class="dashboard-item">
+      <h4>CPU Usage</h4>
+      <div class="meter">
+        <span style="width: 55%;"></span>
+      </div>
+    </div>
+    <div class="dashboard-item">
+      <h4>Data Integrity</h4>
+      <div class="meter">
+        <span style="width: 85%;"></span>
+      </div>
+    </div>
+  </div>
 
   <!-- Audio Elements -->
   <audio id="hover-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
   <audio id="easter-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+  <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop muted></audio>
 
   <script src="script.js"></script>
 </body>

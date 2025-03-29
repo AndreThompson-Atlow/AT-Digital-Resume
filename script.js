@@ -1,53 +1,85 @@
-// Smooth Scrolling for Navigation Links
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function(e) {
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth Scrolling for Navigation Links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  
+    // Contact Form Submission
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
+      alert('Thank you for reaching out! I will get back to you soon.');
+      this.reset();
+    });
+  
+    // Play sound on project card hover
+    const hoverSound = document.getElementById('hover-sound');
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        hoverSound.currentTime = 0;
+        hoverSound.play();
+      });
+    });
+  
+    // Easter Egg: Toggle hidden hack mode message when logo is clicked
+    const logo = document.getElementById('logo');
+    const easterEgg = document.getElementById('easter-egg');
+    const easterSound = document.getElementById('easter-sound');
+    logo.addEventListener('click', () => {
+      easterEgg.classList.toggle('hidden');
+      easterSound.currentTime = 0;
+      easterSound.play();
+      // Auto-hide the easter egg after 3 seconds if visible
+      if (!easterEgg.classList.contains('hidden')) {
+        setTimeout(() => {
+          easterEgg.classList.add('hidden');
+        }, 3000);
       }
     });
-  });
   
-  // Mobile Menu Toggle
-  const menuToggle = document.getElementById('menu-toggle');
-  const navLinks = document.getElementById('nav-links');
-  
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
-  
-  // Contact Form Submission
-  document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Thank you for reaching out! I will get back to you soon.');
-    this.reset();
-  });
-  
-  // Play sound on project card hover
-  const hoverSound = document.getElementById('hover-sound');
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      hoverSound.currentTime = 0;
-      hoverSound.play();
-    });
-  });
-  
-  // Easter Egg: Toggle hidden hack mode message when logo is clicked
-  const logo = document.getElementById('logo');
-  const easterEgg = document.getElementById('easter-egg');
-  const easterSound = document.getElementById('easter-sound');
-  
-  logo.addEventListener('click', () => {
-    easterEgg.classList.toggle('hidden');
-    easterSound.currentTime = 0;
-    easterSound.play();
-    // Auto-hide the easter egg after 3 seconds if visible
-    if (!easterEgg.classList.contains('hidden')) {
+    // Fake System Pop-up Alert
+    function showSystemPopup() {
+      const popup = document.createElement('div');
+      popup.classList.add('system-popup');
+      popup.textContent = "System Breach Detected! Running Diagnostics...";
+      document.body.appendChild(popup);
       setTimeout(() => {
-        easterEgg.classList.add('hidden');
-      }, 3000);
+        popup.remove();
+      }, 3500);
     }
+    // Trigger system popup after 5 seconds, and then every 20 seconds (50% chance)
+    setTimeout(showSystemPopup, 5000);
+    setInterval(() => {
+      if (Math.random() < 0.5) {
+        showSystemPopup();
+      }
+    }, 20000);
+  
+    // Music Control Toggle
+    const musicControl = document.getElementById('music-control');
+    const bgMusic = document.getElementById('bg-music');
+    musicControl.addEventListener('click', () => {
+      if (bgMusic.muted) {
+        bgMusic.muted = false;
+        musicControl.textContent = "Mute Music";
+        bgMusic.play();
+      } else {
+        bgMusic.muted = true;
+        musicControl.textContent = "Unmute Music";
+      }
+    });
   });
   

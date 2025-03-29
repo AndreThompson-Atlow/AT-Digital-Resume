@@ -1,4 +1,4 @@
-/* CSS Variables for Color Palette & Fonts */
+/* CSS Variables */
 :root {
     --bg-color: #000;
     --primary-color: #0ff; /* Neon Cyan */
@@ -20,6 +20,33 @@
     color: var(--text-color);
     font-family: var(--font-family);
     line-height: 1.6;
+    /* Subtle background flicker to simulate instability */
+    animation: bgFlicker 10s infinite;
+  }
+  
+  @keyframes bgFlicker {
+    0% { background-color: #000; }
+    25% { background-color: #0a0a0a; }
+    50% { background-color: #000; }
+    75% { background-color: #0a0a0a; }
+    100% { background-color: #000; }
+  }
+  
+  /* Music Control Button */
+  #music-control {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: var(--accent-color);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 3000;
+    transition: background 0.3s;
+  }
+  #music-control:hover {
+    background: var(--secondary-color);
   }
   
   /* Navbar */
@@ -43,7 +70,6 @@
     cursor: pointer;
     transition: transform 0.3s;
   }
-  
   .logo:hover {
     transform: rotate(5deg);
   }
@@ -63,11 +89,24 @@
     font-weight: bold;
     transition: color 0.3s;
   }
-  
   .nav-link:hover {
     color: var(--secondary-color);
   }
   
+  /* Additional Glitch Effects for Text */
+  .glitch-text {
+    animation: glitchText 2s infinite;
+  }
+  @keyframes glitchText {
+    0% { text-shadow: 1px 1px var(--secondary-color); }
+    20% { text-shadow: -1px -1px var(--accent-color); }
+    40% { text-shadow: 2px -2px var(--secondary-color); }
+    60% { text-shadow: -2px 2px var(--accent-color); }
+    80% { text-shadow: 1px -1px var(--secondary-color); }
+    100% { text-shadow: -1px 1px var(--accent-color); }
+  }
+  
+  /* Menu Toggle */
   .menu-toggle {
     display: none;
     font-size: 1.5rem;
@@ -85,7 +124,6 @@
     position: relative;
     background: url('https://source.unsplash.com/1600x900/?cyberpunk') no-repeat center center/cover;
   }
-  
   .hero-overlay {
     position: absolute;
     top: 0;
@@ -95,7 +133,6 @@
     background: rgba(0,0,0,0.6);
     pointer-events: none;
   }
-  
   .hero-content {
     position: relative;
     z-index: 1;
@@ -110,13 +147,12 @@
     color: var(--primary-color);
     animation: glitch 1s infinite;
   }
-  
   @keyframes glitch {
-    0%   { text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color); }
-    20%  { text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color); }
-    40%  { text-shadow: 2px -2px var(--secondary-color), -2px 2px var(--accent-color); }
-    60%  { text-shadow: -2px 2px var(--secondary-color), 2px -2px var(--accent-color); }
-    80%  { text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color); }
+    0% { text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color); }
+    20% { text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color); }
+    40% { text-shadow: 2px -2px var(--secondary-color), -2px 2px var(--accent-color); }
+    60% { text-shadow: -2px 2px var(--secondary-color), 2px -2px var(--accent-color); }
+    80% { text-shadow: 2px 2px var(--secondary-color), -2px -2px var(--accent-color); }
     100% { text-shadow: -2px -2px var(--secondary-color), 2px 2px var(--accent-color); }
   }
   
@@ -130,7 +166,6 @@
     border-radius: 4px;
     transition: background 0.3s;
   }
-  
   .btn:hover {
     background: var(--secondary-color);
   }
@@ -157,28 +192,23 @@
     background: rgba(0, 0, 0, 0.8);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  
   .project-card:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px var(--primary-color);
   }
-  
   .project-thumbnail {
     width: 100%;
     border-radius: 4px;
     margin-bottom: 0.5rem;
     transition: transform 0.3s ease;
   }
-  
   .project-thumbnail:hover {
     transform: scale(1.1);
   }
-  
   .project-card h3 {
     margin-bottom: 0.5rem;
     color: var(--secondary-color);
   }
-  
   .project-links a {
     margin-right: 0.5rem;
     text-decoration: none;
@@ -186,7 +216,6 @@
     color: var(--primary-color);
     transition: color 0.3s;
   }
-  
   .project-links a:hover {
     color: var(--secondary-color);
   }
@@ -196,11 +225,9 @@
     display: flex;
     flex-direction: column;
   }
-  
   #contact-form label {
     margin-top: 1rem;
   }
-  
   #contact-form input,
   #contact-form textarea {
     padding: 0.5rem;
@@ -219,26 +246,61 @@
     border-top: 1px solid var(--accent-color);
   }
   
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      background: rgba(0,0,0,0.9);
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      padding: 1rem;
-      border: 1px solid var(--accent-color);
-    }
-    
-    .nav-links.active {
-      display: flex;
-    }
-    
-    .menu-toggle {
-      display: block;
-    }
+  /* Fake Pop-up (System Alert) */
+  .system-popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid var(--secondary-color);
+    padding: 1rem 2rem;
+    z-index: 2500;
+    animation: popup 0.5s ease-out, fadeOut 0.5s ease-out 3s forwards;
+  }
+  @keyframes popup {
+    from { opacity: 0; transform: translateX(-50%) scale(0.8); }
+    to { opacity: 1; transform: translateX(-50%) scale(1); }
+  }
+  @keyframes fadeOut {
+    to { opacity: 0; }
+  }
+  
+  /* Hacker Dashboard (Fake Busy Elements) */
+  #hacker-dashboard {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.8);
+    padding: 0.5rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    z-index: 2000;
+  }
+  .dashboard-item {
+    margin-bottom: 0.5rem;
+  }
+  .dashboard-item h4 {
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+  }
+  .meter {
+    background: #222;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    overflow: hidden;
+    height: 8px;
+  }
+  .meter span {
+    display: block;
+    height: 100%;
+    background: var(--primary-color);
+    animation: meterAnimation 4s ease-in-out infinite;
+  }
+  @keyframes meterAnimation {
+    0% { width: 0%; }
+    50% { width: 100%; }
+    100% { width: 0%; }
   }
   
   /* Fade-in Animation for Sections */
@@ -247,7 +309,6 @@
     animation: fadeIn 1s ease-in forwards;
     animation-delay: 0.5s;
   }
-  
   @keyframes fadeIn {
     to { opacity: 1; }
   }
@@ -263,21 +324,17 @@
     border: 2px solid var(--secondary-color);
     border-radius: 8px;
     text-align: center;
-    z-index: 2000;
+    z-index: 3000;
     animation: pulse 1.5s infinite;
   }
-  
   .easter-egg p {
     font-size: 1.5rem;
     color: var(--secondary-color);
   }
-  
   /* Initially hidden */
   .hidden {
     display: none;
   }
-  
-  /* Pulse Animation for Easter Egg */
   @keyframes pulse {
     0% { transform: translate(-50%, -50%) scale(0.9); }
     50% { transform: translate(-50%, -50%) scale(1.05); }
