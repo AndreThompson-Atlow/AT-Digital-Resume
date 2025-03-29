@@ -64,7 +64,7 @@
   /* Music Control Button */
   #music-control {
     position: fixed;
-    top: 10px;
+    bottom: 10px;
     right: 10px;
     background: rgba(23, 74, 255, 0.2);
     color: var(--primary-color);
@@ -76,6 +76,9 @@
     transition: all 0.3s;
     font-family: var(--font-mono);
     font-size: 0.8rem;
+    animation: slideIn 0.5s ease-out 2s forwards;
+    opacity: 0;
+    transform: translateX(100px);
   }
   
   #music-control:hover {
@@ -83,6 +86,13 @@
     color: var(--secondary-color);
     text-shadow: 0 0 5px var(--secondary-color);
     box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+  }
+  
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
   
   /* Terminal Intro */
@@ -1045,6 +1055,245 @@
     50% { box-shadow: 0 0 50px rgba(255, 204, 0, 0.8); }
     100% { box-shadow: 0 0 30px rgba(255, 204, 0, 0.5); }
   }
+  
+  /* Command Console */
+  .command-console {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: 600px;
+    max-width: 90vw;
+    background: var(--terminal-bg);
+    border: 1px solid var(--primary-color);
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    z-index: 4000;
+    box-shadow: 0 0 20px rgba(0, 255, 225, 0.3);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .command-console.active {
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  .console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--primary-color);
+    border-radius: 5px 5px 0 0;
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  
+  .console-controls {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .console-controls span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .console-close {
+    background: var(--danger-color);
+  }
+  
+  .console-maximize {
+    background: var(--secondary-color);
+  }
+  
+  .console-minimize {
+    background: var(--success-color);
+  }
+  
+  .console-content {
+    padding: 12px;
+    height: 250px;
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .console-output {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    overflow-y: auto;
+  }
+  
+  .console-line {
+    margin-bottom: 5px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  
+  .console-input-line {
+    display: flex;
+    align-items: center;
+  }
+  
+  .console-prompt {
+    color: var(--success-color);
+    margin-right: 8px;
+    user-select: none;
+  }
+  
+  #console-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    outline: none;
+  }
+  
+  /* Dynamic Data Panels */
+  .data-panels {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 320px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none;
+  }
+  
+  .data-panel {
+    background: var(--terminal-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 255, 225, 0.2);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    transform: translateX(50px);
+    pointer-events: all;
+  }
+  
+  .data-panel.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+  
+  .panel-controls {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .panel-controls span {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .panel-close {
+    background: var(--danger-color);
+  }
+  
+  .panel-content {
+    padding: 12px;
+    max-height: 450px;
+    overflow-y: auto;
+  }
+  
+  /* Chart containers */
+  .chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .chart-item {
+    background: rgba(10, 14, 23, 0.6);
+    border: 1px solid rgba(0, 255, 225, 0.3);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    flex: 1 1 calc(50% - 10px);
+    min-width: 120px;
+  }
+  
+  .chart-item h4 {
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: var(--font-mono);
+  }
+  
+  /* Code display */
+  .code-display {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    overflow-x: auto;
+    background: rgba(10, 14, 23, 0.6);
+    border-radius: var(--border-radius);
+    padding: 10px;
+  }
+  
+  .code-display code {
+    display: block;
+    color: var(--text-color);
+  }
+  
+  .typing {
+    position: relative;
+  }
+  
+  .typing::after {
+    content: '|';
+    position: absolute;
+    animation: cursor-blink 1s infinite;
+  }
+  
+  /* Active line highlight */
+  .active-line {
+    background: rgba(0, 255, 225, 0.1);
+    display: inline-block;
+    width: 100%;
+  }
+  
+  /* Syntax highlighting */
+  .keyword { color: #ff2a6d; }
+  .function { color: #00ffe1; }
+  .variable { color: #e0e0e0; }
+  .string { color: #ffcc00; }
+  .comment { color: #6272a4; }
+  .number { color: #05ffa1; }
   
   /* Fade-in Animation for Sections */
   .fade-in {

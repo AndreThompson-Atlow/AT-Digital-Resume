@@ -10,9 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Music Control Button -->
-  <div id="music-control">Unmute Music</div>
-
   <!-- Header & Navigation -->
   <header id="header">
     <nav class="navbar">
@@ -477,11 +474,113 @@
     </div>
   </div>
 
+  <!-- Music Control Button -->
+  <div id="music-control">Unmute Music</div>
+  
+  <!-- Command Console -->
+  <div id="command-console" class="command-console">
+    <div class="console-header">
+      <span>console.exe</span>
+      <div class="console-controls">
+        <span class="console-minimize">─</span>
+        <span class="console-maximize">□</span>
+        <span class="console-close" id="close-console">×</span>
+      </div>
+    </div>
+    <div class="console-content">
+      <div class="console-output" id="console-output">
+        <div class="console-line">Welcome to CommandOS v3.7.1</div>
+        <div class="console-line">Type 'help' for available commands</div>
+      </div>
+      <div class="console-input-line">
+        <span class="console-prompt">C:\></span>
+        <input type="text" id="console-input" autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dynamic Data Panels -->
+  <div id="data-panels" class="data-panels">
+    <!-- Data Visualizations Panel -->
+    <div class="data-panel" id="data-visualization-panel">
+      <div class="panel-header">
+        <span>data_analysis.exe</span>
+        <div class="panel-controls">
+          <span class="panel-close">×</span>
+        </div>
+      </div>
+      <div class="panel-content">
+        <div class="chart-container">
+          <div class="chart-item">
+            <h4>Performance Metrics</h4>
+            <canvas id="pie-chart" width="150" height="150"></canvas>
+          </div>
+          <div class="chart-item">
+            <h4>Resource Allocation</h4>
+            <canvas id="bar-chart" width="200" height="150"></canvas>
+          </div>
+        </div>
+        <div class="chart-container">
+          <div class="chart-item">
+            <h4>Function Plot</h4>
+            <canvas id="function-plot" width="200" height="150"></canvas>
+          </div>
+          <div class="chart-item">
+            <h4>Network Traffic</h4>
+            <canvas id="line-chart" width="200" height="150"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Code Panel -->
+    <div class="data-panel" id="code-panel">
+      <div class="panel-header">
+        <span>live_coding.exe</span>
+        <div class="panel-controls">
+          <span class="panel-close">×</span>
+        </div>
+      </div>
+      <div class="panel-content">
+        <pre class="code-display"><code id="live-code">
+import sys
+from quantum import encryption
+from neural import network
+
+# Initializing systems
+systems = ["network", "database", "security", "frontend"]
+for system in systems:
+    status = initialize_system(system)
+    print(f"System {system}: {status}")
+
+# Configure neural network
+model = network.create(layers=[128, 64, 32])
+model.train(data="portfolio_data.json")
+
+# Activate quantum encryption
+encryption.generate_keys(bits=4096)
+encryption.secure_channel(protocol="AES-256")
+
+# Run system check
+def system_health():
+    all_systems = check_all_systems()
+    return all_systems.status
+
+if __name__ == "__main__":
+    main()
+        </code></pre>
+      </div>
+    </div>
+  </div>
+
   <!-- Audio Elements -->
   <audio id="hover-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
   <audio id="easter-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
   <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop muted></audio>
   <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-20.mp3"></audio>
+  <audio id="typing-sound" src="https://www.soundjay.com/mechanical/sounds/typewriter-1.mp3"></audio>
+  <audio id="console-error" src="https://www.soundjay.com/button/sounds/button-10.mp3"></audio>
+  <audio id="console-success" src="https://www.soundjay.com/button/sounds/button-14.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
