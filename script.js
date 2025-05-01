@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
       initThemeToggle();
       initKonamiCode();
       initMusicControl();
+      // Initialize dynamic elements after a short delay
+      setTimeout(initDynamicElements, 2000); 
     }
     
     // Lazy load features as they enter the viewport
@@ -395,26 +397,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const startIdx = (currentPage - 1) * cardsPerPage;
         const endIdx = startIdx + cardsPerPage;
         
-        // First hide all cards but keep their space in the layout
+        // Hide all cards using display: none
         projectCards.forEach(card => {
-          card.style.opacity = '0';
-          card.style.visibility = 'hidden';
-          card.style.position = 'absolute';
-          card.style.pointerEvents = 'none';
+          card.style.display = 'none';
+          card.style.opacity = '0'; // Keep opacity for fade effect consistency
         });
         
-        // Only show the filtered cards for current page
+        // Show the filtered cards for the current page using display: flex
         filteredCards.forEach((card, index) => {
           if (index >= startIdx && index < endIdx) {
-            card.style.position = 'relative';
-            card.style.visibility = 'visible';
-            card.style.pointerEvents = 'auto';
-            
-            // Add fade-in effect
+            card.style.display = 'flex'; // Use flex since cards are flex containers
+            // Add fade-in effect (delay needed for display change)
             setTimeout(() => {
               card.style.opacity = '1';
               card.style.transform = 'translateY(0)';
-            }, 50 * (index - startIdx)); // Stagger the animations
+            }, 10); // Small delay after display change
+          } else {
+             // Ensure non-visible cards remain hidden and reset transform
+             card.style.display = 'none';
+             card.style.transform = 'translateY(10px)'; // Reset for potential future fade-in
           }
         });
       }
