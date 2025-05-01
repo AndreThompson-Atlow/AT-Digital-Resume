@@ -246,12 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Drawing function for the code rain
       function draw() {
-        // Semi-transparent black background to create trail effect
-        ctx.fillStyle = 'rgba(10, 14, 23, 0.05)';
+        // Use theme-aware background color
+        const isLightTheme = document.documentElement.classList.contains('light-theme');
+        const rainBgColor = isLightTheme ? 'rgba(240, 245, 255, 0.08)' : 'rgba(10, 14, 23, 0.05)';
+        ctx.fillStyle = rainBgColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Set the color and font for the falling characters
-        ctx.fillStyle = '#00ffe1';
+        // Set the color and font for the falling characters (use primary theme color)
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
         ctx.font = fontSize + 'px monospace';
         
         // Loop through each drop
@@ -262,11 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // Draw the character
           ctx.fillText(text, i * fontSize, drops[i] * 1);
           
-          // Randomly change the color of some characters for effect
+          // Randomly change the color of some characters for effect (use secondary theme color)
           if (Math.random() > 0.975) {
-            ctx.fillStyle = '#ffcc00';
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim();
           } else {
-            ctx.fillStyle = '#00ffe1';
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
           }
           
           // Move the drop down
