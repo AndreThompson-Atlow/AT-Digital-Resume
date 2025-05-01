@@ -143,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
           terminalOverlay.classList.add('hidden');
           document.body.classList.remove('terminal-active');
           startCodeRain();
-          scrollToHome();
         }, 500);
       }
       
@@ -189,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
               terminalOverlay.classList.add('hidden');
               document.body.classList.remove('terminal-active');
               startCodeRain();
-              scrollToHome();
             }, 500);
           }, 2000);
         }
@@ -946,24 +944,34 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initializes the data visualization panels (charts)
     function initDataVisualization() {
-      setTimeout(() => {
-        const dataVisualizationPanel = document.getElementById('data-visualization-panel');
-        dataVisualizationPanel.classList.add('visible');
-        dynamicElementsLoaded.visualizationPanel = true;
+      // Don't show automatically, wait for trigger (e.g., console command or shortcut)
+      // setTimeout(() => {
+      //   const dataVisualizationPanel = document.getElementById('data-visualization-panel');
+      //   dataVisualizationPanel.classList.add('visible');
+      //   dynamicElementsLoaded.visualizationPanel = true;
         
-        // Create charts
-        createPieChart();
-        createBarChart();
-        createLineChart();
-        createFunctionPlot();
+      //   // Create charts only when first made visible
+      //   if (!window.pieChart) createPieChart();
+      //   if (!window.barChart) createBarChart();
+      //   if (!window.lineChart) createLineChart();
+      //   if (!window.functionPlot) createFunctionPlot();
         
-        // Auto-hide after some time
-        setTimeout(() => {
-          if (Math.random() > 0.5) { // 50% chance to auto-hide
-            dataVisualizationPanel.classList.remove('visible');
-          }
-        }, 20000);
-      }, 15000);
+      //   // Remove Auto-hide logic
+      //   // setTimeout(() => {
+      //   //   if (Math.random() > 0.5) { 
+      //   //     dataVisualizationPanel.classList.remove('visible');
+      //   //   }
+      //   // }, 20000);
+      // }, 15000);
+      
+      // Add close button functionality
+      const vizPanel = document.getElementById('data-visualization-panel');
+      const closeVizBtn = vizPanel?.querySelector('.panel-close');
+      if (vizPanel && closeVizBtn) {
+          closeVizBtn.addEventListener('click', () => {
+              vizPanel.classList.remove('visible');
+          });
+      }
     }
     
     function createPieChart() {
@@ -1217,21 +1225,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initializes the live coding simulation panel
     function initCodePanel() {
-      setTimeout(() => {
-        const codePanel = document.getElementById('code-panel');
-        codePanel.classList.add('visible');
-        dynamicElementsLoaded.codePanel = true;
+      // Don't show automatically, wait for trigger
+      // setTimeout(() => {
+      //   const codePanel = document.getElementById('code-panel');
+      //   codePanel.classList.add('visible');
+      //   dynamicElementsLoaded.codePanel = true;
         
-        // Start code animation
-        animateCode();
+      //   // Start code animation only when first made visible
+      //   animateCode(); 
         
-        // Auto-hide after some time
-        setTimeout(() => {
-          if (Math.random() > 0.3) { // 70% chance to auto-hide
-            codePanel.classList.remove('visible');
-          }
-        }, 25000);
-      }, 12000);
+      //   // Remove Auto-hide logic
+      //   // setTimeout(() => {
+      //   //   if (Math.random() > 0.3) { 
+      //   //     codePanel.classList.remove('visible');
+      //   //   }
+      //   // }, 25000);
+      // }, 12000);
+      
+      // Add close button functionality
+      const codePanel = document.getElementById('code-panel');
+      const closeCodeBtn = codePanel?.querySelector('.panel-close');
+      if (codePanel && closeCodeBtn) {
+          closeCodeBtn.addEventListener('click', () => {
+              codePanel.classList.remove('visible');
+          });
+      }
     }
     
     function animateCode() {
@@ -1298,9 +1316,12 @@ document.addEventListener('DOMContentLoaded', () => {
       highlightNextLine();
     }
     
-    // Initializes all dynamic UI elements (panels, dashboard)
+    // Initializes all dynamic UI elements (panels, dashboard, console, popups)
     function initDynamicElements() {
-       initCommandConsole();
+       // Initialize console (appears after delay)
+       initCommandConsole(); 
+       
+       // Initialize panels (but don't show them automatically)
        initDataVisualization();
        initCodePanel();
        
@@ -1310,32 +1331,88 @@ document.addEventListener('DOMContentLoaded', () => {
        if (dashboard && dashboardHeader) {
          dashboardHeader.addEventListener('click', () => {
            dashboard.classList.toggle('collapsed');
-           // Play click sound
            const clickSound = document.getElementById('click-sound');
            if (clickSound) {
              clickSound.currentTime = 0;
-             clickSound.volume = 0.4; // Slightly louder for UI interaction
+             clickSound.volume = 0.4;
              clickSound.play().catch(e => {});
            }
          });
          
-         // Animate dashboard meters independently ONLY IF dashboard exists
          const meters = dashboard.querySelectorAll('.meter span');
          meters.forEach(meter => {
-           const randomDuration = 3 + Math.random() * 4; // Random duration between 3-7 seconds
+           const randomDuration = 3 + Math.random() * 4;
            meter.style.animation = `meterAnimation ${randomDuration}s ease-in-out infinite`;
          });
        }
        
-       // Show System Popup periodically
+       // Show System Popup periodically (keep this for effect)
        setTimeout(() => {
          showSystemPopup();
          setInterval(() => {
-           if (Math.random() < 0.3) { // 30% chance to show popup
+           if (Math.random() < 0.3) {
              showSystemPopup();
            }
-         }, 15000 + Math.random() * 20000); // Random interval between 15-35 seconds
+         }, 15000 + Math.random() * 20000);
        }, 8000);
+       
+       // Initialize Keyboard Shortcuts for toggling panels/console
+       initKeyboardShortcuts();
+    }
+
+    // Function to handle keyboard shortcuts for dynamic elements
+    function initKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+          // Ctrl + Space to toggle command console
+          if (e.ctrlKey && e.code === 'Space') {
+            e.preventDefault();
+            const commandConsole = document.getElementById('command-console');
+            if (commandConsole) {
+                commandConsole.classList.toggle('active');
+                if (commandConsole.classList.contains('active')) {
+                    document.getElementById('console-input')?.focus();
+                }
+            }
+          }
+          
+          // Ctrl + D to toggle dashboard (Keep this? Or remove? Let's keep for now)
+          if (e.ctrlKey && e.code === 'KeyD') {
+            e.preventDefault();
+            const dashboard = document.getElementById('hacker-dashboard');
+            dashboard?.classList.toggle('collapsed');
+          }
+          
+          // Ctrl + V to toggle visualization panel
+          if (e.ctrlKey && e.code === 'KeyV') {
+            e.preventDefault();
+            const vizPanel = document.getElementById('data-visualization-panel');
+            if (vizPanel) {
+                vizPanel.classList.toggle('visible');
+                // Initialize charts only when first made visible via shortcut
+                if (vizPanel.classList.contains('visible') && !dynamicElementsLoaded.visualizationPanel) {
+                    createPieChart();
+                    createBarChart();
+                    createLineChart();
+                    createFunctionPlot();
+                    dynamicElementsLoaded.visualizationPanel = true;
+                }
+            }
+          }
+          
+          // Ctrl + K to toggle code panel
+          if (e.ctrlKey && e.code === 'KeyK') {
+            e.preventDefault();
+            const codePanel = document.getElementById('code-panel');
+             if (codePanel) {
+                codePanel.classList.toggle('visible');
+                // Start animation only when first made visible via shortcut
+                if (codePanel.classList.contains('visible') && !dynamicElementsLoaded.codePanel) {
+                    animateCode();
+                    dynamicElementsLoaded.codePanel = true;
+                }
+            }
+          }
+        });
     }
     
     // Adds functionality to the resume download button
