@@ -1,0 +1,823 @@
+:root {
+    --bg-color: #0a0e17;
+    --primary-color: #00ffe1; /* Neon Cyan */
+    --secondary-color: #ffcc00; /* Neon Yellow */
+    --accent-color: #174aff; /* Neon Blue */
+    --danger-color: #ff2a6d; /* Neon Pink */
+    --success-color: #05ffa1; /* Neon Green */
+    --dark-bg: #0a0e17;
+    --darker-bg: #070b12;
+    --light-bg: #1a1e27;
+    --text-color: #ffffff;
+    --terminal-bg: rgba(10, 14, 23, 0.95);
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-display: 'VT323', monospace;
+    --border-radius: 4px;
+    --glow-shadow: 0 0 10px rgba(0, 255, 225, 0.7);
+    --low-color: var(--success-color);
+    --medium-color: var(--secondary-color);
+    --high-color: #ff9f00; /* Orange */
+    --critical-color: var(--danger-color);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(rgba(0, 255, 225, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 255, 225, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: bgFlicker 10s infinite;
+}
+
+@keyframes bgFlicker {
+    0% { background-color: var(--bg-color); }
+    25% { background-color: var(--darker-bg); }
+    50% { background-color: var(--bg-color); }
+    75% { background-color: var(--darker-bg); }
+    100% { background-color: var(--bg-color); }
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.todo-app {
+    width: 100%;
+    background: var(--darker-bg);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 225, 0.4), 
+                inset 0 0 10px rgba(0, 255, 225, 0.1);
+    padding: 1.5rem;
+    animation: appPulse 4s infinite;
+    overflow: hidden;
+}
+
+@keyframes appPulse {
+    0% { box-shadow: 0 0 20px rgba(0, 255, 225, 0.4), inset 0 0 10px rgba(0, 255, 225, 0.1); }
+    50% { box-shadow: 0 0 30px rgba(0, 255, 225, 0.6), inset 0 0 15px rgba(0, 255, 225, 0.2); }
+    100% { box-shadow: 0 0 20px rgba(0, 255, 225, 0.4), inset 0 0 10px rgba(0, 255, 225, 0.1); }
+}
+
+/* Header Styles */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 225, 0.3);
+}
+
+.app-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 255, 225, 0.7);
+    letter-spacing: 2px;
+}
+
+.text-accent {
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}
+
+.app-subtitle {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+
+/* Form Styles */
+.todo-form {
+    margin-bottom: 1.5rem;
+    background: rgba(10, 14, 23, 0.5);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.input-group input {
+    flex-grow: 1;
+    background: rgba(10, 14, 23, 0.8);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 0.8rem 1rem;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.input-group button {
+    background: rgba(5, 255, 161, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+    border-radius: var(--border-radius);
+    padding: 0 1.5rem;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.input-group button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(5, 255, 161, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.input-group button:hover {
+    background: rgba(5, 255, 161, 0.3);
+    box-shadow: 0 0 10px rgba(5, 255, 161, 0.4);
+}
+
+.input-group button:hover::before {
+    left: 100%;
+}
+
+/* Priority Selector */
+.priority-selector {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.priority-label {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+}
+
+.priority-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.priority-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.priority-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.priority-text {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.priority-text.low {
+    background: rgba(5, 255, 161, 0.1);
+    color: var(--low-color);
+    border: 1px solid var(--low-color);
+}
+
+.priority-text.medium {
+    background: rgba(255, 204, 0, 0.1);
+    color: var(--medium-color);
+    border: 1px solid var(--medium-color);
+}
+
+.priority-text.high {
+    background: rgba(255, 159, 0, 0.1);
+    color: var(--high-color);
+    border: 1px solid var(--high-color);
+}
+
+.priority-text.critical {
+    background: rgba(255, 42, 109, 0.1);
+    color: var(--critical-color);
+    border: 1px solid var(--critical-color);
+}
+
+.priority-option input:checked + .priority-text {
+    box-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
+}
+
+.priority-option input:checked + .priority-text.low {
+    background: rgba(5, 255, 161, 0.3);
+    box-shadow: 0 0 10px rgba(5, 255, 161, 0.4);
+}
+
+.priority-option input:checked + .priority-text.medium {
+    background: rgba(255, 204, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+}
+
+.priority-option input:checked + .priority-text.high {
+    background: rgba(255, 159, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 159, 0, 0.4);
+}
+
+.priority-option input:checked + .priority-text.critical {
+    background: rgba(255, 42, 109, 0.3);
+    box-shadow: 0 0 10px rgba(255, 42, 109, 0.4);
+}
+
+/* List Controls */
+.list-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-container label {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+}
+
+.filter-container select {
+    background: rgba(10, 14, 23, 0.8);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    transition: all 0.3s ease;
+}
+
+.filter-container select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
+}
+
+.clear-button {
+    background: rgba(255, 42, 109, 0.2);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clear-button:hover {
+    background: rgba(255, 42, 109, 0.3);
+    box-shadow: 0 0 10px rgba(255, 42, 109, 0.4);
+}
+
+/* Task Stats */
+.task-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    background: rgba(10, 14, 23, 0.5);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 0.8rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    font-family: var(--font-display);
+}
+
+/* Todo List Container */
+.todo-list-container {
+    background: rgba(10, 14, 23, 0.5);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.list-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px 150px;
+    background: var(--light-bg);
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--primary-color);
+    font-size: 0.9rem;
+    color: var(--accent-color);
+}
+
+.todo-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Todo Item */
+.task-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px 150px;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 225, 0.1);
+    transition: all 0.3s ease;
+    align-items: center;
+}
+
+.task-item:hover {
+    background: rgba(0, 255, 225, 0.05);
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Checkbox */
+.checkbox-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    width: 24px;
+    height: 24px;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(10, 14, 23, 0.8);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.checkbox-container:hover .checkmark {
+    background-color: rgba(0, 255, 225, 0.1);
+    box-shadow: 0 0 5px rgba(0, 255, 225, 0.3);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: rgba(0, 255, 225, 0.2);
+    border-color: var(--primary-color);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--primary-color);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Task Content */
+.task-content {
+    display: flex;
+    flex-direction: column;
+    padding-right: 10px;
+}
+
+.task-text {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.task-date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Priority Badge */
+.priority-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-badge.low {
+    background: rgba(5, 255, 161, 0.1);
+    color: var(--low-color);
+    border: 1px solid var(--low-color);
+}
+
+.priority-badge.medium {
+    background: rgba(255, 204, 0, 0.1);
+    color: var(--medium-color);
+    border: 1px solid var(--medium-color);
+}
+
+.priority-badge.high {
+    background: rgba(255, 159, 0, 0.1);
+    color: var(--high-color);
+    border: 1px solid var(--high-color);
+}
+
+.priority-badge.critical {
+    background: rgba(255, 42, 109, 0.1);
+    color: var(--critical-color);
+    border: 1px solid var(--critical-color);
+}
+
+/* Task Actions */
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background: rgba(255, 204, 0, 0.2);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.edit-btn:hover {
+    background: rgba(255, 204, 0, 0.3);
+    box-shadow: 0 0 5px rgba(255, 204, 0, 0.4);
+}
+
+.delete-btn {
+    background: rgba(255, 42, 109, 0.2);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+}
+
+.delete-btn:hover {
+    background: rgba(255, 42, 109, 0.3);
+    box-shadow: 0 0 5px rgba(255, 42, 109, 0.4);
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.empty-text {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.empty-subtext {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 11, 18, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--darker-bg);
+    border: 2px solid var(--accent-color);
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(23, 74, 255, 0.4);
+    width: 90%;
+    max-width: 500px;
+    animation: modalOpen 0.3s ease-out;
+}
+
+@keyframes modalOpen {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.modal-header h2 {
+    color: var(--accent-color);
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: var(--danger-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+}
+
+.form-group input {
+    width: 100%;
+    background: rgba(10, 14, 23, 0.8);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 0.8rem 1rem;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 1rem;
+    border-top: 1px solid rgba(23, 74, 255, 0.3);
+}
+
+.save-btn, .cancel-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background: rgba(5, 255, 161, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.save-btn:hover {
+    background: rgba(5, 255, 161, 0.3);
+    box-shadow: 0 0 10px rgba(5, 255, 161, 0.4);
+}
+
+.cancel-btn {
+    background: rgba(255, 42, 109, 0.2);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 42, 109, 0.3);
+    box-shadow: 0 0 10px rgba(255, 42, 109, 0.4);
+}
+
+/* Footer */
+.app-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 255, 225, 0.3);
+}
+
+.back-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.back-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-color);
+    transition: width 0.3s;
+}
+
+.back-link:hover {
+    color: var(--primary-color);
+}
+
+.back-link:hover::after {
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+.time-info {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-family: var(--font-display);
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: var(--border-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .todo-app {
+        padding: 1rem;
+    }
+    
+    .list-header, .task-item {
+        grid-template-columns: 60px 1fr 80px auto;
+    }
+    
+    .priority-options {
+        margin-top: 0.5rem;
+    }
+    
+    .task-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .list-header, .task-item {
+        grid-template-columns: 60px 1fr 80px;
+    }
+    
+    .header-actions, .task-actions {
+        display: none;
+    }
+    
+    .task-item {
+        position: relative;
+    }
+    
+    .task-actions {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .task-content {
+        grid-column: 2 / span 2;
+        margin-bottom: 2rem;
+    }
+    
+    .priority-badge {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+        margin-top: 0.5rem;
+    }
+    
+    .task-item.with-actions .task-actions {
+        display: flex;
+    }
+} 

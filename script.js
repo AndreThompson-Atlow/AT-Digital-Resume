@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Terminal intro animation
-    const terminal = document.getElementById('terminal');
-    const lines = document.querySelectorAll('.terminal-content .line');
-    let lineIndex = 0;
+    // Ensure page starts at the top
+    window.scrollTo(0, 0);
     
     // Track loaded dynamic elements
     let dynamicElementsLoaded = {
@@ -11,32 +9,231 @@ document.addEventListener('DOMContentLoaded', () => {
       codePanel: false
     };
     
-    // Show lines one by one with a typing effect
-    function showNextLine() {
-      if (lineIndex < lines.length) {
-        lines[lineIndex].style.display = 'block';
-        const commandText = lines[lineIndex].querySelector('.command-text');
+    // Initialize only essential features first
+    initEssentialFeatures();
+    
+    // Lazy load non-essential features
+    if ('IntersectionObserver' in window) {
+      lazyLoadFeatures();
+    } else {
+      // Fallback for browsers that don't support IntersectionObserver
+      window.addEventListener('load', initNonEssentialFeatures);
+    }
+    
+    // Initialize only the essential features needed for initial view
+    function initEssentialFeatures() {
+      // Terminal intro animation
+      initTerminal();
+      
+      // Typing effect for hero section
+      initTypingEffect();
+      
+      // Mobile menu toggle
+      initMobileMenu();
+      
+      // Form handling
+      initContactForm();
+      
+      // Resume download handling
+      initResumeDownload();
+      
+      // Theme toggle
+      initThemeToggle();
+      
+      // Initialize Konami Code easter egg
+      initKonamiCode();
+    }
+    
+    // Lazy load features as they come into viewport
+    function lazyLoadFeatures() {
+      const featureSections = {
+        'skills': () => animateSkillBars(),
+        'projects': () => initProjectCards(),
+        'contact': () => {} // Contact form already initialized
+      };
+      
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            if (featureSections[sectionId]) {
+              featureSections[sectionId]();
+            }
+            sectionObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      });
+      
+      // Observe each section
+      Object.keys(featureSections).forEach(id => {
+        const section = document.getElementById(id);
+        if (section) {
+          sectionObserver.observe(section);
+        }
+      });
+      
+      // Observe terminal to start code rain after terminal animation
+      const terminal = document.getElementById('terminal');
+      if (terminal) {
+        const terminalObserver = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            // Terminal is visible, start animation
+            // Animation already handled in initTerminal
+            terminalObserver.unobserve(terminal);
+          }
+        }, {
+          threshold: 0.5
+        });
+        terminalObserver.observe(terminal);
+      }
+      
+      // Lazy load images
+      const imagesToLazyLoad = document.querySelectorAll('.project-thumbnail');
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src') || img.src;
+            if (src) {
+              img.src = src;
+            }
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+      
+      imagesToLazyLoad.forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+    
+    // Terminal intro animation
+    function initTerminal() {
+      const terminal = document.getElementById('terminal');
+      const terminalOverlay = document.getElementById('terminal-overlay');
+      const lines = document.querySelectorAll('.terminal-content .line');
+      const terminalClose = document.querySelector('.terminal-close');
+      let lineIndex = 0;
+      
+      // Check URL parameters for skipIntro
+      const urlParams = new URLSearchParams(window.location.search);
+      const shouldSkipIntro = urlParams.get('skipIntro') === 'true';
+      
+      // Check localStorage for last intro time
+      const lastIntroTime = localStorage.getItem('terminalIntroLastShown');
+      const currentTime = Date.now();
+      const tenMinutesInMs = 10 * 60 * 1000; 
+      
+      // Skip intro if URL parameter is set, or if less than 10 minutes have passed since last showing
+      if (shouldSkipIntro || (lastIntroTime && (currentTime - parseInt(lastIntroTime)) < tenMinutesInMs)) {
+        // Immediately hide terminal elements
+        terminal.classList.add('hidden');
+        terminalOverlay.classList.add('hidden');
+        document.body.classList.remove('terminal-active');
+        startCodeRain();
+        return;
+      }
+      
+      // Store current time as last shown time
+      localStorage.setItem('terminalIntroLastShown', currentTime.toString());
+      
+      // Make sure terminal and overlay are visible at start
+      terminal.classList.remove('hidden');
+      terminalOverlay.classList.remove('hidden');
+      
+      // Prevent scrolling while terminal is active
+      document.body.classList.add('terminal-active');
+      
+      // Hide all lines initially
+      lines.forEach(line => {
+        line.style.display = 'none';
+      });
+      
+      // Allow skipping the intro
+      terminalClose.addEventListener('click', skipIntro);
+      
+      function skipIntro() {
+        // Remove event listener to prevent multiple calls
+        terminalClose.removeEventListener('click', skipIntro);
         
-        if (commandText) {
-          typingEffect(commandText, () => {
+        // Hide terminal immediately
+        terminal.style.opacity = '0';
+        terminalOverlay.style.opacity = '0';
+        setTimeout(() => {
+          terminal.classList.add('hidden');
+          terminalOverlay.classList.add('hidden');
+          
+          // Allow scrolling again
+          document.body.classList.remove('terminal-active');
+          
+          startCodeRain(); // Start the Matrix-like code rain
+          
+          // Scroll to home section
+          scrollToHome();
+        }, 500);
+      }
+      
+      // Function to scroll to home section
+      function scrollToHome() {
+        const homeSection = document.getElementById('home');
+        if (homeSection) {
+          // Scroll to home with a slight delay for smoother transition
+          setTimeout(() => {
+            homeSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 100);
+        }
+      }
+      
+      // Start the terminal animation
+      setTimeout(showNextLine, 1000);
+      
+      // Show lines one by one with a typing effect
+      function showNextLine() {
+        if (lineIndex < lines.length) {
+          lines[lineIndex].style.display = 'block';
+          const commandText = lines[lineIndex].querySelector('.command-text');
+          
+          if (commandText) {
+            typingEffect(commandText, () => {
+              lineIndex++;
+              setTimeout(showNextLine, 500);
+            });
+          } else {
             lineIndex++;
             setTimeout(showNextLine, 500);
-          });
+          }
         } else {
-          lineIndex++;
-          setTimeout(showNextLine, 500);
-        }
-      } else {
-        // All lines displayed, hide terminal after delay
-        setTimeout(() => {
-          terminal.style.opacity = '0';
+          // Show a quick notification about the intro being saved
+          const saveNotification = document.createElement('div');
+          saveNotification.className = 'line';
+          saveNotification.innerHTML = '<span class="blue">INFO:</span> This intro will be hidden for 10 minutes. Type "reset" in console to show it again.';
+          document.querySelector('.terminal-content').appendChild(saveNotification);
+          
+          // Wait a bit more before hiding
           setTimeout(() => {
-            terminal.style.display = 'none';
-            startCodeRain(); // Start the Matrix-like code rain
-            animateSkillBars(); // Animate skill bars
-            initDynamicElements(); // Initialize dynamic elements
-          }, 500);
-        }, 1000);
+            terminal.style.opacity = '0';
+            terminalOverlay.style.opacity = '0';
+            setTimeout(() => {
+              terminal.classList.add('hidden');
+              terminalOverlay.classList.add('hidden');
+              
+              // Allow scrolling again
+              document.body.classList.remove('terminal-active');
+              
+              startCodeRain(); // Start the Matrix-like code rain
+              
+              // Scroll to home section
+              scrollToHome();
+            }, 500);
+          }, 2000);
+        }
       }
     }
     
@@ -58,14 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       type();
     }
-    
-    // Hide all lines initially
-    lines.forEach(line => {
-      line.style.display = 'none';
-    });
-    
-    // Start the terminal animation
-    setTimeout(showNextLine, 1000);
     
     // Matrix-like code rain animation
     function startCodeRain() {
@@ -146,46 +335,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   
     // Type writing effect for hero section
-    const typedTextSpan = document.querySelector(".typed-text");
-    const cursorSpan = document.querySelector(".typed-text + .cursor");
-    
-    const textArray = ["Crafting Efficient Solutions", "Building Web Applications", "Optimizing Performance", "Creating User Experiences"];
-    const typingDelay = 80;
-    const erasingDelay = 50;
-    const newTextDelay = 2000; // Delay between current and next text
-    let textArrayIndex = 0;
-    let charIndex = 0;
-    
-    function type() {
-      if (charIndex < textArray[textArrayIndex].length) {
-        if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-        typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-        charIndex++;
-        setTimeout(type, typingDelay);
-      } 
-      else {
-        cursorSpan.classList.remove("typing");
-        setTimeout(erase, newTextDelay);
+    function initTypingEffect() {
+      const typedTextSpan = document.querySelector(".typed-text");
+      const cursorSpan = document.querySelector(".typed-text + .cursor");
+      
+      if (!typedTextSpan || !cursorSpan) return;
+      
+      const textArray = ["Crafting Efficient Solutions", "Building Web Applications", "Optimizing Performance", "Creating User Experiences"];
+      const typingDelay = 80;
+      const erasingDelay = 50;
+      const newTextDelay = 2000; // Delay between current and next text
+      let textArrayIndex = 0;
+      let charIndex = 0;
+      
+      function type() {
+        if (charIndex < textArray[textArrayIndex].length) {
+          if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+          typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+          charIndex++;
+          setTimeout(type, typingDelay);
+        } 
+        else {
+          cursorSpan.classList.remove("typing");
+          setTimeout(erase, newTextDelay);
+        }
       }
-    }
-    
-    function erase() {
-      if (charIndex > 0) {
-        if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-        typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
-        charIndex--;
-        setTimeout(erase, erasingDelay);
-      } 
-      else {
-        cursorSpan.classList.remove("typing");
-        textArrayIndex++;
-        if(textArrayIndex >= textArray.length) textArrayIndex = 0;
-        setTimeout(type, typingDelay + 1100);
+      
+      function erase() {
+        if (charIndex > 0) {
+          if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+          typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
+          charIndex--;
+          setTimeout(erase, erasingDelay);
+        } 
+        else {
+          cursorSpan.classList.remove("typing");
+          textArrayIndex++;
+          if(textArrayIndex >= textArray.length) textArrayIndex = 0;
+          setTimeout(type, typingDelay + 1100);
+        }
       }
+      
+      // Start typing effect when page loads
+      if(textArray.length) setTimeout(type, newTextDelay + 250);
     }
-    
-    // Start typing effect when page loads
-    if(textArray.length) setTimeout(type, newTextDelay + 250);
   
     // Smooth Scrolling for Navigation Links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -212,17 +405,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     // Mobile Menu Toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const navLinks = document.getElementById('nav-links');
-    
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
+    function initMobileMenu() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
       
-      // Play click sound
-      const clickSound = document.getElementById('click-sound');
-      clickSound.currentTime = 0;
-      clickSound.play();
-    });
+      if (!menuToggle || !navLinks) return;
+      
+      menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        
+        // Play click sound
+        const clickSound = document.getElementById('click-sound');
+        if (clickSound) {
+          clickSound.currentTime = 0;
+          clickSound.play().catch(e => console.log('Audio play prevented by browser'));
+        }
+      });
+    }
   
     // Scroll animations for sections
     const observerOptions = {
@@ -249,18 +448,171 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     // Play sound on project card hover
-    const hoverSound = document.getElementById('hover-sound');
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        if (!isMobileDevice()) { // Only play sound on non-mobile devices
-          hoverSound.currentTime = 0;
-          hoverSound.volume = 0.2; // Lower volume
-          hoverSound.play();
+    function initProjectCards() {
+      // Elements
+      const hoverSound = document.getElementById('hover-sound');
+      const projectCards = document.querySelectorAll('.project-card');
+      const prevPageBtn = document.getElementById('prev-page');
+      const nextPageBtn = document.getElementById('next-page');
+      const currentPageEl = document.getElementById('current-page');
+      const totalPagesEl = document.getElementById('total-pages');
+      
+      if (!hoverSound || !projectCards.length) return;
+      
+      // Pagination settings
+      const cardsPerPage = window.innerWidth <= 768 ? 3 : 6; // Show 3 projects on mobile, 6 on desktop
+      let currentPage = 1;
+      let filteredCards = [...projectCards]; // Start with all cards
+      
+      // Calculate total pages
+      function updatePagination() {
+        const totalPages = Math.ceil(filteredCards.length / cardsPerPage) || 1; // Ensure at least 1 page
+        currentPage = Math.min(currentPage, totalPages);
+        
+        // Update page info
+        if (totalPagesEl) totalPagesEl.textContent = totalPages;
+        if (currentPageEl) currentPageEl.textContent = currentPage;
+        
+        // Enable/disable buttons
+        if (prevPageBtn) prevPageBtn.disabled = currentPage === 1;
+        if (nextPageBtn) nextPageBtn.disabled = currentPage === totalPages || filteredCards.length === 0;
+        
+        // Show/hide cards based on pagination
+        showCurrentPageCards();
+      }
+      
+      // Show only cards for current page
+      function showCurrentPageCards() {
+        const startIdx = (currentPage - 1) * cardsPerPage;
+        const endIdx = startIdx + cardsPerPage;
+        
+        // First hide all cards but keep their space in the layout
+        projectCards.forEach(card => {
+          card.style.opacity = '0';
+          card.style.visibility = 'hidden';
+          card.style.position = 'absolute';
+          card.style.pointerEvents = 'none';
+        });
+        
+        // Only show the filtered cards for current page
+        filteredCards.forEach((card, index) => {
+          if (index >= startIdx && index < endIdx) {
+            card.style.position = 'relative';
+            card.style.visibility = 'visible';
+            card.style.pointerEvents = 'auto';
+            
+            // Add fade-in effect
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, 50 * (index - startIdx)); // Stagger the animations
+          }
+        });
+      }
+      
+      // Project filtering
+      const filterButtons = document.querySelectorAll('.project-filter-btn');
+      if (filterButtons.length) {
+        filterButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            // Save current scroll position
+            const projectsSection = document.getElementById('projects');
+            const projectsSectionTop = projectsSection.getBoundingClientRect().top + window.scrollY;
+            
+            // Update active filter button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const filterValue = button.getAttribute('data-filter');
+            
+            // Filter projects
+            if (filterValue === 'all') {
+              filteredCards = [...projectCards];
+            } else {
+              filteredCards = [...projectCards].filter(card => {
+                const techSpans = card.querySelectorAll('.project-tech span');
+                const technologies = Array.from(techSpans).map(span => span.textContent.toLowerCase());
+                return technologies.includes(filterValue.toLowerCase());
+              });
+            }
+            
+            // Reset to first page when filter changes
+            currentPage = 1;
+            updatePagination();
+            
+            // Restore scroll position
+            window.scrollTo({
+              top: projectsSectionTop,
+              behavior: 'auto'
+            });
+          });
+        });
+      }
+      
+      // Add pagination button event listeners
+      if (prevPageBtn) {
+        prevPageBtn.addEventListener('click', () => {
+          if (currentPage > 1) {
+            // Save the current scroll position
+            const currentScrollPos = window.scrollY;
+            const projectsSection = document.getElementById('projects');
+            const projectsSectionTop = projectsSection.getBoundingClientRect().top + window.scrollY;
+            
+            currentPage--;
+            updatePagination();
+            
+            // Restore the scroll position relative to the projects section
+            window.scrollTo({
+              top: projectsSectionTop,
+              behavior: 'auto'
+            });
+          }
+        });
+      }
+      
+      if (nextPageBtn) {
+        nextPageBtn.addEventListener('click', () => {
+          const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+          if (currentPage < totalPages) {
+            // Save the current scroll position
+            const currentScrollPos = window.scrollY;
+            const projectsSection = document.getElementById('projects');
+            const projectsSectionTop = projectsSection.getBoundingClientRect().top + window.scrollY;
+            
+            currentPage++;
+            updatePagination();
+            
+            // Restore the scroll position relative to the projects section
+            window.scrollTo({
+              top: projectsSectionTop,
+              behavior: 'auto'
+            });
+          }
+        });
+      }
+      
+      // Handle resize (for responsive pagination)
+      window.addEventListener('resize', () => {
+        const newCardsPerPage = window.innerWidth <= 768 ? 3 : 6;
+        if (newCardsPerPage !== cardsPerPage) {
+          cardsPerPage = newCardsPerPage;
+          updatePagination();
         }
       });
-    });
+      
+      projectCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          if (!isMobileDevice()) { // Only play sound on non-mobile devices
+            hoverSound.currentTime = 0;
+            hoverSound.volume = 0.2; // Lower volume
+            hoverSound.play().catch(e => console.log('Audio play prevented by browser'));
+          }
+        });
+      });
+      
+      // Initialize pagination
+      updatePagination();
+    }
     
     // Detect if user is on a mobile device
     function isMobileDevice() {
@@ -269,26 +621,78 @@ document.addEventListener('DOMContentLoaded', () => {
              (navigator.maxTouchPoints > 0);
     }
   
-    // Easter Egg: Toggle hidden hack mode when logo is clicked
+    // Easter Egg: Triple click logo for hack mode, single click for home
     const logo = document.getElementById('logo');
     const easterEgg = document.getElementById('easter-egg');
     const easterSound = document.getElementById('easter-sound');
     const closeEasterEgg = document.getElementById('close-easter-egg');
+    let clickCount = 0;
+    let clickTimer = null;
     
-    logo.addEventListener('click', () => {
-      easterEgg.classList.remove('hidden');
-      easterSound.currentTime = 0;
-      easterSound.play();
+    logo.addEventListener('click', (e) => {
+      // Increment click counter
+      clickCount++;
       
-      // Add console hack command
-      if (dynamicElementsLoaded.commandConsole) {
-        const consoleOutput = document.getElementById('console-output');
-        const hackLine = document.createElement('div');
-        hackLine.className = 'console-line';
-        hackLine.innerHTML = '<span style="color:#ff2a6d;">ATTENTION:</span> Backdoor access granted. Type "hack" to initiate.';
-        consoleOutput.appendChild(hackLine);
-        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      // Visual feedback for multiple clicks
+      if (clickCount === 2) {
+        logo.style.color = 'var(--accent-color)'; // Blue on second click
+      } else if (clickCount === 3) {
+        logo.style.color = 'var(--danger-color)'; // Red on third click
+        // Small visual glitch effect
+        logo.style.textShadow = '2px 0 var(--danger-color), -2px 0 var(--accent-color)';
+        setTimeout(() => {
+          logo.style.textShadow = '';
+        }, 100);
       }
+      
+      // Clear any existing timer
+      if (clickTimer) {
+        clearTimeout(clickTimer);
+      }
+      
+      // Set timer to reset click count after 500ms
+      clickTimer = setTimeout(() => {
+        // If it was a triple click, show hack mode
+        if (clickCount === 3) {
+          // Activate hack mode
+          easterEgg.classList.remove('hidden');
+          easterSound.currentTime = 0;
+          easterSound.play().catch(e => console.log('Audio play prevented by browser'));
+          
+          // Add console hack command
+          if (dynamicElementsLoaded.commandConsole) {
+            const consoleOutput = document.getElementById('console-output');
+            const hackLine = document.createElement('div');
+            hackLine.className = 'console-line';
+            hackLine.innerHTML = '<span style="color:#ff2a6d;">ATTENTION:</span> Backdoor access granted. Type "hack" to initiate.';
+            consoleOutput.appendChild(hackLine);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+          }
+        } 
+        // If it was a single click, scroll to home
+        else if (clickCount === 1) {
+          // Scroll to home section
+          const homeSection = document.getElementById('home');
+          if (homeSection) {
+            // Play click sound
+            const clickSound = document.getElementById('click-sound');
+            if (clickSound) {
+              clickSound.currentTime = 0;
+              clickSound.play().catch(e => console.log('Audio play prevented by browser'));
+            }
+            
+            homeSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }
+        
+        // Reset click count and appearance
+        clickCount = 0;
+        logo.style.color = '';
+        logo.style.textShadow = '';
+      }, 500);
     });
     
     closeEasterEgg.addEventListener('click', () => {
@@ -362,26 +766,112 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   
     // Contact Form Submission
-    const contactForm = document.getElementById('contact-form');
-    
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+    function initContactForm() {
+      const contactForm = document.getElementById('contact-form');
+      const formStatus = document.getElementById('form-status');
+      const submitBtn = document.getElementById('submit-btn');
       
-      // Show success popup
-      const popup = document.createElement('div');
-      popup.classList.add('system-popup');
-      popup.textContent = "Message Sent Successfully! I'll get back to you soon.";
-      popup.style.borderColor = "#05ffa1"; // Success color
-      document.body.appendChild(popup);
+      if (!contactForm) return;
       
-      // Reset form
-      this.reset();
-      
-      // Remove popup after delay
-      setTimeout(() => {
-        popup.remove();
-      }, 3500);
-    });
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading spinner
+        submitBtn.classList.add('loading');
+        formStatus.textContent = '';
+        formStatus.classList.remove('success', 'error');
+        
+        // Get the form data
+        const formData = new FormData(this);
+        
+        // Validate form data
+        const email = formData.get('email');
+        const name = formData.get('name');
+        const message = formData.get('message');
+        
+        // Simple validation
+        if (!email || !name || !message) {
+          formStatus.textContent = "Please fill out all fields.";
+          formStatus.classList.add('error');
+          submitBtn.classList.remove('loading');
+          return;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          formStatus.textContent = "Please enter a valid email address.";
+          formStatus.classList.add('error');
+          submitBtn.classList.remove('loading');
+          return;
+        }
+        
+        // Send the form data using fetch
+        fetch(this.action, {
+          method: this.method,
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+          }
+        })
+        .then(data => {
+          // Success message
+          formStatus.textContent = "Message Sent Successfully! I'll get back to you soon.";
+          formStatus.classList.add('success');
+          
+          // Analytics tracking if available
+          if (window.gtag) {
+            window.gtag('event', 'form_submission', {
+              'event_category': 'Contact',
+              'event_label': 'Form Submit Success'
+            });
+          }
+          
+          // Reset form
+          this.reset();
+          
+          // Play success sound
+          const successSound = document.getElementById('console-success');
+          if (successSound) {
+            successSound.currentTime = 0;
+            successSound.play().catch(e => console.log('Audio play prevented by browser'));
+          }
+        })
+        .catch(error => {
+          console.error('Form submission error:', error);
+          
+          // Check if it's a network error
+          if (!navigator.onLine) {
+            formStatus.textContent = "You appear to be offline. Please check your internet connection and try again.";
+          } else {
+            formStatus.textContent = "Oops! Something went wrong. Please try again or contact me directly at andrethompsoncs@gmail.com";
+          }
+          
+          formStatus.classList.add('error');
+          
+          // Play error sound
+          const errorSound = document.getElementById('console-error');
+          if (errorSound) {
+            errorSound.currentTime = 0;
+            errorSound.play().catch(e => console.log('Audio play prevented by browser'));
+          }
+        })
+        .finally(() => {
+          // Hide loading spinner
+          submitBtn.classList.remove('loading');
+          
+          // Scroll the form status into view
+          formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      });
+    }
   
     // Command Console functionality
     function initCommandConsole() {
@@ -429,6 +919,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('easter-egg').classList.remove('hidden');
             document.getElementById('easter-sound').play();
             return 'HACK MODE ACTIVATED!';
+          }
+        },
+        reset: {
+          description: 'Reset terminal intro timer',
+          execute: () => {
+            localStorage.removeItem('terminalIntroLastShown');
+            return 'Terminal intro timer reset. The terminal will appear on your next visit.';
           }
         },
         stats: {
@@ -1014,4 +1511,219 @@ document.addEventListener('DOMContentLoaded', () => {
       if (window.lineChart) window.lineChart.resize();
       if (window.functionPlot) window.functionPlot.resize();
     });
+    
+    // Handle resume download with fallback
+    function initResumeDownload() {
+      const resumeBtn = document.querySelector('.btn-download');
+      if (!resumeBtn) return;
+      
+      resumeBtn.addEventListener('click', function(e) {
+        // First try the normal download
+        // If it fails (no file exists), we'll redirect to the HTML version
+        
+        const resumeHref = resumeBtn.getAttribute('href');
+        const resumeFileName = resumeBtn.getAttribute('download');
+        
+        // Check if the file exists with a head request
+        fetch(resumeHref, { method: 'HEAD' })
+          .then(response => {
+            if (!response.ok) {
+              e.preventDefault();
+              
+              // File doesn't exist, redirect to HTML version instead
+              window.open('Andre_Thompson_Resume.html', '_blank');
+              
+              // Show small notification
+              const popup = document.createElement('div');
+              popup.classList.add('system-popup');
+              popup.style.borderColor = 'var(--success-color)';
+              popup.textContent = "Opening resume in a new tab. You can use your browser's print function to save as PDF.";
+              document.body.appendChild(popup);
+              
+              setTimeout(() => {
+                popup.remove();
+              }, 5000);
+            }
+            // If file exists, normal download proceeds
+          })
+          .catch(err => {
+            console.error('Error checking resume file:', err);
+            e.preventDefault();
+            
+            // On any error, use the HTML version as fallback
+            window.open('Andre_Thompson_Resume.html', '_blank');
+          });
+      });
+    }
+    
+    // Theme toggle functionality
+    function initThemeToggle() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = themeToggle.querySelector('.theme-icon');
+      
+      // Check for saved theme preference or use default (dark mode)
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+        themeIcon.textContent = '☀️';
+      }
+      
+      // Toggle theme on click
+      themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('light-theme');
+        
+        // Update icon and save preference
+        if (document.documentElement.classList.contains('light-theme')) {
+          themeIcon.textContent = '☀️';
+          localStorage.setItem('theme', 'light');
+        } else {
+          themeIcon.textContent = '🌙';
+          localStorage.setItem('theme', 'dark');
+        }
+        
+        // Play click sound
+        const clickSound = document.getElementById('click-sound');
+        if (clickSound) {
+          clickSound.currentTime = 0;
+          clickSound.play().catch(e => console.log('Audio play prevented by browser'));
+        }
+      });
+    }
+    
+    // Konami Code Easter Egg (↑ ↑ ↓ ↓ ← → ← → B A)
+    function initKonamiCode() {
+      const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+      let konamiIndex = 0;
+      
+      document.addEventListener('keydown', (e) => {
+        // Get the key that was pressed
+        const key = e.code;
+        
+        // Check if the key matches the next key in the Konami sequence
+        if (key === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          
+          // If the entire sequence was entered correctly
+          if (konamiIndex === konamiCode.length) {
+            activateKonamiCode();
+            konamiIndex = 0; // Reset the index
+          }
+        } else {
+          konamiIndex = 0; // Reset on incorrect key
+          
+          // If the incorrect key is the first key of the sequence, start over
+          if (key === konamiCode[0]) {
+            konamiIndex = 1;
+          }
+        }
+      });
+      
+      function activateKonamiCode() {
+        // Debug log
+        console.log('Konami Code activated!');
+        
+        // Play a dedicated Konami sound
+        const konamiSound = document.getElementById('konami-sound');
+        const successSound = document.getElementById('console-success');
+        const clickSound = document.getElementById('click-sound');
+        
+        // Try multiple sounds to ensure at least one plays
+        if (konamiSound) {
+          konamiSound.volume = 0.7; // Make sure volume is audible
+          konamiSound.currentTime = 0;
+          konamiSound.play()
+            .then(() => console.log('Konami sound played'))
+            .catch(e => {
+              console.log('Failed to play konami sound:', e);
+              // Try fallback sounds
+              if (successSound) {
+                successSound.volume = 0.7;
+                successSound.currentTime = 0;
+                successSound.play().catch(() => {
+                  if (clickSound) {
+                    clickSound.volume = 0.7;
+                    clickSound.currentTime = 0;
+                    clickSound.play().catch(e => console.log('All sounds failed:', e));
+                  }
+                });
+              }
+            });
+        }
+        
+        // Show a special message
+        showSystemPopup("KONAMI CODE ACTIVATED: DEVELOPER MODE UNLOCKED!");
+        
+        // Apply special effects to the page
+        document.body.classList.add('konami-mode');
+        console.log('Added konami-mode class to body');
+        
+        // Add rainbow border to all project cards
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+          card.classList.add('konami-card');
+        });
+        console.log(`Added konami-card class to ${projectCards.length} project cards`);
+        
+        // Create a floating 8-bit character that follows the cursor
+        createKonamiCharacter();
+      }
+      
+      function createKonamiCharacter() {
+        // Create the character element
+        const character = document.createElement('div');
+        character.className = 'konami-character';
+        
+        // Use the preloaded sprite
+        const spriteImg = document.getElementById('konami-sprite');
+        if (spriteImg) {
+          // Use the preloaded image's src
+          character.innerHTML = `<img src="${spriteImg.src}" alt="8-bit character" />`;
+        } else {
+          // Fallback to a direct URL if preloaded image not found
+          character.innerHTML = '<img src="https://assets.codepen.io/27140/sonic-running.gif" alt="8-bit character" />';
+        }
+        
+        document.body.appendChild(character);
+        console.log('Added Konami character to the page');
+        
+        // Make character follow cursor with a delay
+        let characterX = 0;
+        let characterY = 0;
+        
+        // Start at center of screen
+        characterX = window.innerWidth / 2 - 25;
+        characterY = window.innerHeight / 2 - 25;
+        character.style.left = `${characterX}px`;
+        character.style.top = `${characterY}px`;
+        
+        document.addEventListener('mousemove', (e) => {
+          // Set target position with some offset
+          const targetX = e.clientX - 25; // Half of character width
+          const targetY = e.clientY - 25; // Half of character height
+          
+          // Animate movement
+          function updatePosition() {
+            // Calculate distance to target
+            const dx = targetX - characterX;
+            const dy = targetY - characterY;
+            
+            // Move 10% of the distance each frame
+            characterX += dx * 0.1;
+            characterY += dy * 0.1;
+            
+            // Apply position
+            character.style.left = `${characterX}px`;
+            character.style.top = `${characterY}px`;
+            
+            // Continue animation if not very close to target
+            if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+              requestAnimationFrame(updatePosition);
+            }
+          }
+          
+          // Start animation
+          requestAnimationFrame(updatePosition);
+        });
+      }
+    }
   });

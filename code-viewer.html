@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Viewer - Project Files</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="code-viewer.css">
+</head>
+<body>
+    <div class="ide-container">
+        <div class="ide-header">
+            <div class="ide-title">CYBER<span class="text-accent">IDE</span> v1.0</div>
+            <div class="ide-controls">
+                <button id="back-button" class="control-button">← Back</button>
+            </div>
+        </div>
+        <div class="ide-sidebar">
+            <div class="file-explorer">
+                <div class="explorer-header">
+                    <span>File Explorer</span>
+                </div>
+                <div class="file-tree" id="file-tree">
+                    <!-- Files will be populated here via JavaScript -->
+                </div>
+            </div>
+        </div>
+        <div class="ide-main">
+            <div class="tabs-container" id="tabs-container">
+                <!-- Tabs will be populated here via JavaScript -->
+            </div>
+            <div class="editor-container">
+                <pre class="code-editor" id="code-editor"><code id="code-content">// Select a file from the sidebar to view its code</code></pre>
+            </div>
+        </div>
+        <div class="ide-footer">
+            <div class="status-bar">
+                <div class="status-item">Read-Only Mode</div>
+                <div class="status-item">Line: <span id="line-count">0</span></div>
+                <div class="status-item">Project: <span id="project-name">Loading...</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-text">LOADING CODE</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-status" id="loading-status">Initializing CyberIDE...</div>
+        </div>
+    </div>
+
+    <script src="code-viewer.js"></script>
+</body>
+</html> 

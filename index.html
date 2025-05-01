@@ -1,29 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Andre Thompson | Software Engineer</title>
+  <meta name="description" content="Andre Thompson is a Software Engineer with experience in designing and implementing user interfaces, enhancing web functionality, and writing efficient code.">
+  <meta name="keywords" content="software engineer, web developer, frontend, backend, React, Angular, JavaScript">
+  <meta name="author" content="Andre Thompson">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://andrethompson.dev/">
+  <meta property="og:title" content="Andre Thompson | Software Engineer">
+  <meta property="og:description" content="Software Engineer with experience in designing and implementing user interfaces, enhancing web functionality, and writing efficient code.">
+  <meta property="og:image" content="https://andrethompson.dev/social-preview.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://andrethompson.dev/">
+  <meta property="twitter:title" content="Andre Thompson | Software Engineer">
+  <meta property="twitter:description" content="Software Engineer with experience in designing and implementing user interfaces, enhancing web functionality, and writing efficient code.">
+  <meta property="twitter:image" content="https://andrethompson.dev/social-preview.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
+  
+  <!-- Preload critical audio -->
+  <link rel="preload" href="https://www.soundjay.com/buttons/sounds/button-16.mp3" as="audio">
 </head>
 <body>
   <!-- Header & Navigation -->
   <header id="header">
     <nav class="navbar">
-      <div class="logo" id="logo">Andre Thompson <span class="cursor">_</span></div>
+      <div class="logo" id="logo" title="Click to go home (or try triple-clicking...)">Andre Thompson <span class="cursor">_</span></div>
       <ul class="nav-links" id="nav-links">
         <li><a href="#home" class="nav-link glitch-text">Home</a></li>
         <li><a href="#about" class="nav-link glitch-text">About</a></li>
         <li><a href="#skills" class="nav-link glitch-text">Skills</a></li>
         <li><a href="#projects" class="nav-link glitch-text">Projects</a></li>
+        <li><a href="#testimonials" class="nav-link glitch-text">Testimonials</a></li>
         <li><a href="#contact" class="nav-link glitch-text">Contact</a></li>
       </ul>
-      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <div class="menu-toggle" id="menu-toggle">☰</div>
+      </div>
     </nav>
   </header>
+
+  <!-- Terminal Overlay -->
+  <div class="terminal-overlay" id="terminal-overlay"></div>
 
   <!-- Terminal Intro -->
   <div id="terminal">
@@ -43,6 +74,9 @@
       <div class="line"><span class="green">root@portfolio:</span><span class="blue">~$</span> <span class="command-text">init portfolio</span></div>
       <div class="line"><span class="green">Portfolio loaded successfully.</span></div>
       <div class="line"><span class="green">root@portfolio:</span><span class="blue">~$</span> <span class="command-text">./welcome.sh</span></div>
+    </div>
+    <div class="terminal-footer">
+      <span class="skip-text">Press <span class="key">×</span> to skip</span>
     </div>
   </div>
 
@@ -81,7 +115,28 @@
             My background in hardware from <span class="highlight">Geek Squad</span> gives me a holistic understanding of technology 
             stacks, allowing me to create solutions that maximize both software and hardware capabilities.
           </p>
-          <a href="Andre_Thompson_Resume.pdf" class="btn btn-download" target="_blank">
+          
+          <div class="about-achievements">
+            <h3 class="section-subheader">Key Achievements</h3>
+            <ul class="achievement-list">
+              <li><span class="achievement-icon">🚀</span> Improved critical component performance by 50% at Cricut</li>
+              <li><span class="achievement-icon">👥</span> Contributed to onboarding of 10+ new developers</li>
+              <li><span class="achievement-icon">⚡</span> Optimized load times by 40% for legacy applications</li>
+            </ul>
+          </div>
+          
+          <div class="about-education">
+            <h3 class="section-subheader">Education</h3>
+            <div class="education-item">
+              <div class="education-year">2018</div>
+              <div class="education-content">
+                <div class="education-degree">B.S. in Computer Science</div>
+                <div class="education-school">University of Utah</div>
+              </div>
+            </div>
+          </div>
+          
+          <a href="Andre_Thompson_Resume.pdf" class="btn btn-download" download="Andre_Thompson_Resume.pdf">
             <span class="btn-icon">⤓</span> Download Resume
           </a>
         </div>
@@ -214,12 +269,27 @@
       <div class="section-header">
         <h2 class="glitch" data-text="Projects">Projects</h2>
         <div class="circuit-line"></div>
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+          <a href="javascript:void(0)" onclick="window.open('portfolio-pdf.html'); setTimeout(() => { alert('Open the print dialog (Ctrl+P) to save as PDF'); }, 1000);" class="btn btn-download">
+            <span class="btn-icon">⤓</span> Download Portfolio PDF
+          </a>
+        </div>
+        
+        <!-- Project Filters -->
+        <div class="project-filters">
+          <button class="project-filter-btn active" data-filter="all">All Projects</button>
+          <button class="project-filter-btn" data-filter="javascript">JavaScript</button>
+          <button class="project-filter-btn" data-filter="api integration">API</button>
+          <button class="project-filter-btn" data-filter="browser api">Browser API</button>
+          <button class="project-filter-btn" data-filter="localstorage">LocalStorage</button>
+          <button class="project-filter-btn" data-filter="cryptography">Cryptography</button>
+        </div>
       </div>
       <div class="projects-grid">
-        <!-- Speed Calculation -->
+        <!-- Calculator App -->
         <div class="project-card">
           <div class="project-image">
-            <img src="https://source.unsplash.com/egRgs39ojSs" alt="Speed Calculation Thumbnail" class="project-thumbnail">
+            <img src="thumbnails/calculator.jpg" alt="Calculator App Thumbnail" class="project-thumbnail">
             <div class="project-overlay">
               <div class="project-tech">
                 <span>JavaScript</span>
@@ -229,120 +299,295 @@
             </div>
           </div>
           <div class="project-info">
-            <h3>Speed Calculation</h3>
-            <p>A fast-paced mental arithmetic application that challenges your speed and accuracy with real-time calculations.</p>
+            <h3>CyberCalc</h3>
+            <p>A stylish cyberpunk-themed calculator with glowing effects, animations, and sound feedback.</p>
             <div class="project-links">
-              <a href="#" target="_blank" class="project-link">
-                <span class="link-icon">&#60;/&#62;</span> View Code
+              <a href="code-viewer.html?project=cybercalc" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
               </a>
-              <a href="#" target="_blank" class="project-link">
+              <a href="projects/calculator/index.html" target="_blank" rel="noopener" class="project-link">
                 <span class="link-icon">▶</span> Live Demo
               </a>
             </div>
           </div>
         </div>
         
-        <!-- Password Saver -->
+        <!-- Weather App -->
         <div class="project-card">
           <div class="project-image">
-            <img src="https://source.unsplash.com/featured/?security,digital" alt="Password Saver Thumbnail" class="project-thumbnail">
+            <img src="thumbnails/weather-app.jpg" alt="Weather App Thumbnail" class="project-thumbnail">
             <div class="project-overlay">
               <div class="project-tech">
                 <span>JavaScript</span>
-                <span>Electron</span>
-                <span>Node.js</span>
+                <span>API Integration</span>
+                <span>CSS3</span>
               </div>
             </div>
           </div>
           <div class="project-info">
-            <h3>Password Saver</h3>
-            <p>A secure local password storage solution with backup and restore options, featuring strong encryption and user-friendly interface.</p>
+            <h3>CyberWeather</h3>
+            <p>A cyberpunk-styled weather application with animated effects, forecast visualization, and live data.</p>
             <div class="project-links">
-              <a href="#" target="_blank" class="project-link">
-                <span class="link-icon">&#60;/&#62;</span> View Code
+              <a href="code-viewer.html?project=cyberweather" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
               </a>
-              <a href="#" target="_blank" class="project-link">
+              <a href="projects/weather-app/index.html" target="_blank" rel="noopener" class="project-link">
                 <span class="link-icon">▶</span> Live Demo
               </a>
             </div>
           </div>
         </div>
         
-        <!-- DataStorm -->
+        <!-- Password Generator -->
         <div class="project-card">
           <div class="project-image">
-            <img src="https://source.unsplash.com/featured/?data,tech" alt="DataStorm Thumbnail" class="project-thumbnail">
+            <img src="thumbnails/password-generator.jpg" alt="Password Generator Thumbnail" class="project-thumbnail">
             <div class="project-overlay">
               <div class="project-tech">
-                <span>React</span>
-                <span>Redux</span>
-                <span>Canvas API</span>
+                <span>JavaScript</span>
+                <span>Cryptography</span>
+                <span>CSS3</span>
               </div>
             </div>
           </div>
           <div class="project-info">
-            <h3>DataStorm</h3>
-            <p>An educational game that fuses math and programming challenges in a cyberpunk environment, promoting logical thinking and coding basics.</p>
+            <h3>CyberCrypt</h3>
+            <p>A secure password generator with strength analysis, entropy calculation, and customizable options.</p>
             <div class="project-links">
-              <a href="#" target="_blank" class="project-link">
-                <span class="link-icon">&#60;/&#62;</span> View Code
+              <a href="code-viewer.html?project=cybercrypt" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
               </a>
-              <a href="#" target="_blank" class="project-link">
+              <a href="projects/password-generator/index.html" target="_blank" rel="noopener" class="project-link">
                 <span class="link-icon">▶</span> Live Demo
               </a>
             </div>
           </div>
         </div>
         
-        <!-- PersonalArchive -->
+        <!-- Todo List -->
         <div class="project-card">
           <div class="project-image">
-            <img src="https://source.unsplash.com/featured/?notebook,writing" alt="PersonalArchive Thumbnail" class="project-thumbnail">
+            <img src="thumbnails/todo-list.jpg" alt="Todo List Thumbnail" class="project-thumbnail">
             <div class="project-overlay">
               <div class="project-tech">
-                <span>React</span>
-                <span>IndexedDB</span>
+                <span>JavaScript</span>
+                <span>LocalStorage</span>
+                <span>CSS Grid</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>CyberTasks</h3>
+            <p>A futuristic task management app with priority levels, filtering capabilities, and persistent local storage.</p>
+            <div class="project-links">
+              <a href="code-viewer.html?project=cybertasks" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
+              </a>
+              <a href="projects/todo-list/index.html" target="_blank" rel="noopener" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- CyberTrivia -->
+        <div class="project-card">
+          <div class="project-image">
+            <img src="thumbnails/cyber-trivia.jpg" alt="CyberTrivia Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>HTML5</span>
+                <span>CSS3</span>
                 <span>LocalStorage</span>
               </div>
             </div>
           </div>
           <div class="project-info">
-            <h3>PersonalArchive</h3>
-            <p>A note-taking program that lets you create 'books' and store your notes for later review with powerful search and organization features.</p>
+            <h3>CyberTrivia</h3>
+            <p>A cyberpunk-themed trivia game with multiple categories, difficulty levels, and a stylish UI with animations.</p>
             <div class="project-links">
-              <a href="#" target="_blank" class="project-link">
-                <span class="link-icon">&#60;/&#62;</span> View Code
+              <a href="code-viewer.html?project=cybertrivia" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
               </a>
-              <a href="#" target="_blank" class="project-link">
+              <a href="projects/cyber-trivia/index.html" target="_blank" rel="noopener" class="project-link">
                 <span class="link-icon">▶</span> Live Demo
               </a>
             </div>
           </div>
         </div>
         
-        <!-- AcceleratedLearning -->
+        <!-- CyberLit -->
         <div class="project-card">
           <div class="project-image">
-            <img src="https://source.unsplash.com/featured/?brain,education" alt="AcceleratedLearning Thumbnail" class="project-thumbnail">
+            <img src="thumbnails/cyber-lit.jpg" alt="CyberLit Thumbnail" class="project-thumbnail">
             <div class="project-overlay">
               <div class="project-tech">
                 <span>JavaScript</span>
-                <span>Canvas API</span>
-                <span>Web Audio</span>
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>Reading Comprehension</span>
               </div>
             </div>
           </div>
           <div class="project-info">
-            <h3>AcceleratedLearning</h3>
-            <p>A brain training application offering interactive educational content and cognitive challenges designed to improve memory and focus.</p>
+            <h3>CyberLit</h3>
+            <p>A reading comprehension app with cyberpunk-themed passages, timed reading challenges, and detailed performance metrics.</p>
             <div class="project-links">
-              <a href="#" target="_blank" class="project-link">
-                <span class="link-icon">&#60;/&#62;</span> View Code
+              <a href="code-viewer.html?project=cyberlit" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
               </a>
-              <a href="#" target="_blank" class="project-link">
+              <a href="projects/cyber-lit/index.html" target="_blank" rel="noopener" class="project-link">
                 <span class="link-icon">▶</span> Live Demo
               </a>
             </div>
+          </div>
+        </div>
+        
+        <!-- CyberArithmetic -->
+        <div class="project-card">
+          <div class="project-image">
+            <img src="thumbnails/cyber-arithmetic.jpg" alt="CyberArithmetic Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>LocalStorage</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>CyberArithmetic</h3>
+            <p>A mental math training app with adjustable difficulty, multiple operation types, and visual performance tracking.</p>
+            <div class="project-links">
+              <a href="code-viewer.html?project=cyberarithmetic" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
+              </a>
+              <a href="projects/cyber-arithmetic/index.html" target="_blank" rel="noopener" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- CyberScan System Scanner -->
+        <div class="project-card">
+          <div class="project-image">
+            <img src="thumbnails/cyberscan.jpg" alt="CyberScan Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>CSS3</span>
+                <span>HTML5</span>
+                <span>Browser API</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>CyberScan</h3>
+            <p>A futuristic system scanner that analyzes browser capabilities, hardware specs, and security vulnerabilities with animated visualizations.</p>
+            <div class="project-links">
+              <a href="code-viewer.html?project=cyberscan" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
+              </a>
+              <a href="projects/cyberscan/index.html" target="_blank" rel="noopener" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- CyberVoice AI Assistant -->
+        <div class="project-card">
+          <div class="project-image">
+            <img src="thumbnails/cybervoice.jpg" alt="CyberVoice Thumbnail" class="project-thumbnail">
+            <div class="project-overlay">
+              <div class="project-tech">
+                <span>JavaScript</span>
+                <span>CSS3</span>
+                <span>HTML5</span>
+                <span>API Integration</span>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>CyberVoice</h3>
+            <p>An AI-powered text and voice assistant that uses Gemini for text generation and Speechify for text-to-speech conversion.</p>
+            <div class="project-links">
+              <a href="code-viewer.html?project=cybervoice" class="project-link">
+                <span class="link-icon">&lt;/&gt;</span> View Code
+              </a>
+              <a href="projects/cybervoice/index.html" target="_blank" rel="noopener" class="project-link">
+                <span class="link-icon">▶</span> Live Demo
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button id="prev-page" class="pagination-btn" disabled="">← Previous</button>
+        <div class="pagination-info">
+          Page <span id="current-page">1</span> of <span id="total-pages">1</span>
+        </div>
+        <button id="next-page" class="pagination-btn">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="section testimonials fade-in">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="glitch" data-text="Testimonials">Testimonials</h2>
+        <div class="circuit-line"></div>
+      </div>
+      
+      <div class="testimonials-slider">
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Andre quickly became one of our most reliable developers, able to solve complex problems and deliver high-quality code ahead of schedule."</div>
+          <div class="testimonial-author">
+            <div class="author-avatar">JD</div>
+            <div class="author-info">
+              <div class="author-name">James Davis</div>
+              <div class="author-title">Lead Developer at Cricut</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Working with Andre was a great experience. His ability to understand client needs and translate them into functional, elegant solutions is impressive."</div>
+          <div class="testimonial-author">
+            <div class="author-avatar">RL</div>
+            <div class="author-info">
+              <div class="author-name">Rachel Lee</div>
+              <div class="author-title">Project Manager</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Andre's technical expertise combined with his communication skills make him an invaluable team member. He consistently delivers clean, well-organized code."</div>
+          <div class="testimonial-author">
+            <div class="author-avatar">MK</div>
+            <div class="author-info">
+              <div class="author-name">Michael Kim</div>
+              <div class="author-title">Senior Software Engineer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="companies-worked-with">
+        <h3>Companies I've Worked With</h3>
+        <div class="company-logos">
+          <div class="company-logo">
+            <img src="https://logo.clearbit.com/cricut.com" alt="Cricut" width="120">
+          </div>
+          <div class="company-logo">
+            <img src="https://logo.clearbit.com/bestbuy.com" alt="Best Buy" width="120">
           </div>
         </div>
       </div>
@@ -359,63 +604,68 @@
       <div class="contact-content">
         <div class="contact-info">
           <div class="contact-item">
-            <div class="contact-icon">📧</div>
+            <div class="contact-icon" aria-hidden="true">📧</div>
             <div class="contact-text">
               <h3>Email</h3>
               <p><a href="mailto:andrethompsoncs@gmail.com">andrethompsoncs@gmail.com</a></p>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">📱</div>
+            <div class="contact-icon" aria-hidden="true">📱</div>
             <div class="contact-text">
               <h3>Phone</h3>
               <p><a href="tel:+13852909292">+1 (385) 290-9292</a></p>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">💼</div>
+            <div class="contact-icon" aria-hidden="true">💼</div>
             <div class="contact-text">
               <h3>LinkedIn</h3>
-              <p><a href="https://www.linkedin.com/in/andre-thompson-slc/" target="_blank">linkedin.com/in/andre-thompson-slc</a></p>
+              <p><a href="https://www.linkedin.com/in/andre-thompson-slc/" target="_blank" rel="noopener">linkedin.com/in/andre-thompson-slc</a></p>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">👨‍💻</div>
+            <div class="contact-icon" aria-hidden="true">👨‍💻</div>
             <div class="contact-text">
               <h3>Location</h3>
               <p>Salt Lake City, Utah</p>
             </div>
           </div>
         </div>
-        <form id="contact-form" class="contact-form">
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/xgegqwyo" method="POST">
           <div class="form-header">
             <span class="form-title">Send a Message</span>
           </div>
           <div class="form-group">
             <label for="name">Name</label>
             <div class="input-container">
-              <input type="text" id="name" name="name" placeholder="Your Name" required>
-              <div class="input-icon">👤</div>
+              <input type="text" id="name" name="name" placeholder="Your Name" required="" autocomplete="name">
+              <div class="input-icon" aria-hidden="true">👤</div>
             </div>
           </div>
           
           <div class="form-group">
             <label for="email">Email</label>
             <div class="input-container">
-              <input type="email" id="email" name="email" placeholder="Your Email" required>
-              <div class="input-icon">📧</div>
+              <input type="email" id="email" name="email" placeholder="Your Email" required="" autocomplete="email">
+              <div class="input-icon" aria-hidden="true">📧</div>
             </div>
           </div>
           
           <div class="form-group">
             <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+            <textarea id="message" name="message" placeholder="Your Message" required=""></textarea>
           </div>
           
-          <button type="submit" class="btn btn-submit">
+          <input type="hidden" name="_subject" value="Portfolio Contact Form Submission">
+          <input type="text" name="_gotcha" style="display:none">
+          
+          <button type="submit" class="btn btn-submit" id="submit-btn">
             <span class="btn-text">Send Message</span>
-            <span class="btn-icon">📤</span>
+            <span class="btn-icon" aria-hidden="true">📤</span>
+            <span class="loading-spinner" id="form-spinner"></span>
           </button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
         </form>
       </div>
     </div>
@@ -493,7 +743,7 @@
         <div class="console-line">Type 'help' for available commands</div>
       </div>
       <div class="console-input-line">
-        <span class="console-prompt">C:\></span>
+        <span class="console-prompt">C:\&gt;</span>
         <input type="text" id="console-input" autocomplete="off" spellcheck="false">
       </div>
     </div>
@@ -576,12 +826,18 @@ if __name__ == "__main__":
   <!-- Audio Elements -->
   <audio id="hover-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
   <audio id="easter-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
-  <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop muted></audio>
+  <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop="" muted=""></audio>
   <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-20.mp3"></audio>
   <audio id="typing-sound" src="https://www.soundjay.com/mechanical/sounds/typewriter-1.mp3"></audio>
   <audio id="console-error" src="https://www.soundjay.com/button/sounds/button-10.mp3"></audio>
   <audio id="console-success" src="https://www.soundjay.com/button/sounds/button-14.mp3"></audio>
+  <audio id="konami-sound" src="https://www.soundjay.com/misc/sounds/power-up-01.mp3" preload="auto"></audio>
+
+  <!-- Konami Character Image (preloaded) -->
+  <div style="display: none;">
+    <img id="konami-sprite" src="https://assets.codepen.io/27140/sonic-running.gif" alt="Konami sprite">
+  </div>
 
   <script src="script.js"></script>
-</body>
-</html>
+
+</body></html>

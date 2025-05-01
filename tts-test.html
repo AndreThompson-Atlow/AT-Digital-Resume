@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        select {
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #3367d6;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        #status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TTS API Test</h1>
+        
+        <div>
+            <h3>Server Status</h3>
+            <div id="server-status">Checking...</div>
+            <button onclick="checkServerStatus()">Check Server Status</button>
+        </div>
+        
+        <hr>
+        
+        <h3>Text to Speech</h3>
+        <textarea id="text-input" placeholder="Enter text to convert to speech">This is a test of the Google Text-to-Speech API through our custom server.</textarea>
+        
+        <div>
+            <label for="voice-select">Voice:</label>
+            <select id="voice-select">
+                <option value="en-US-Standard-C">US English - Female (Standard C)</option>
+                <option value="en-US-Standard-D">US English - Male (Standard D)</option>
+                <option value="en-GB-Standard-A">British English - Female (Standard A)</option>
+                <option value="en-GB-Standard-B">British English - Male (Standard B)</option>
+                <option value="en-AU-Standard-A">Australian English - Female (Standard A)</option>
+                <option value="en-AU-Standard-B">Australian English - Male (Standard B)</option>
+            </select>
+        </div>
+        
+        <button id="convert-btn">Convert to Speech</button>
+        
+        <div id="status"></div>
+        
+        <div class="controls">
+            <audio id="audio-player" controls></audio>
+            <div>
+                <button id="download-btn" disabled>Download Audio</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const textInput = document.getElementById('text-input');
+        const voiceSelect = document.getElementById('voice-select');
+        const convertBtn = document.getElementById('convert-btn');
+        const statusDiv = document.getElementById('status');
+        const audioPlayer = document.getElementById('audio-player');
+        const downloadBtn = document.getElementById('download-btn');
+        const serverStatusDiv = document.getElementById('server-status');
+        
+        // Current audio URL
+        let currentAudioUrl = null;
+        
+        // Check server status on load
+        window.addEventListener('DOMContentLoaded', checkServerStatus);
+        
+        // Initialize event listeners
+        convertBtn.addEventListener('click', convertToSpeech);
+        downloadBtn.addEventListener('click', downloadAudio);
+        
+        // Check server status
+        async function checkServerStatus() {
+            serverStatusDiv.textContent = 'Checking...';
+            serverStatusDiv.className = 'pending';
+            
+            try {
+                const baseUrl = window.location.protocol + '//' + window.location.hostname;
+                const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+                const response = await fetch(`${baseUrl}:${port}/api/status`);
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Server status:', data);
+                
+                if (data && data.status === 'running') {
+                    const ttsStatus = data.tts && data.tts.keyProvided ? 'configured' : 'not configured';
+                    serverStatusDiv.textContent = `Server is running. TTS API key is ${ttsStatus}.`;
+                    serverStatusDiv.className = 'success';
+                } else {
+                    serverStatusDiv.textContent = 'Server is running but returned unexpected data.';
+                    serverStatusDiv.className = 'pending';
+                }
+            } catch (error) {
+                console.error('Error checking server status:', error);
+                serverStatusDiv.textContent = `Server error: ${error.message}. Make sure the server is running (node minimal-server.js)`;
+                serverStatusDiv.className = 'error';
+            }
+        }
+        
+        // Convert text to speech
+        async function convertToSpeech() {
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                showStatus('Please enter text to convert', 'error');
+                return;
+            }
+            
+            showStatus('Converting text to speech...', 'pending');
+            
+            try {
+                const voiceId = voiceSelect.value;
+                
+                // Extract language code correctly from the voice ID
+                // Format should be: en-US, en-GB, etc.
+                const languageCode = voiceId.split('-').slice(0, 2).join('-');
+                
+                // Create the payload for Google TTS API
+                const payload = {
+                    input: {
+                        text: text
+                    },
+                    voice: {
+                        languageCode: languageCode,
+                        name: voiceId
+                    },
+                    audioConfig: {
+                        audioEncoding: 'MP3'
+                    }
+                };
+                
+                // Construct URL
+                const baseUrl = window.location.protocol + '//' + window.location.hostname;
+                const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+                const apiUrl = `${baseUrl}:${port}/api/tts`;
+                
+                console.log('Using API URL:', apiUrl);
+                console.log('Payload:', payload);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.error?.message || 'Unknown error');
+                    } catch (e) {
+                        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                    }
+                }
+                
+                // Parse the response
+                const data = await response.json();
+                
+                if (data.audioContent) {
+                    // Create an audio URL from the base64 encoded audio data
+                    const audioBlob = base64ToBlob(data.audioContent, 'audio/mp3');
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    
+                    currentAudioUrl = audioUrl;
+                    audioPlayer.src = audioUrl;
+                    downloadBtn.disabled = false;
+                    
+                    showStatus('Speech generated successfully!', 'success');
+                } else if (data.error) {
+                    throw new Error(`Google TTS error: ${JSON.stringify(data.error)}`);
+                } else {
+                    throw new Error('No audio data received from API');
+                }
+            } catch (error) {
+                console.error('Error converting text to speech:', error);
+                showStatus(`Error: ${error.message}`, 'error');
+                
+                // Remove fallback audio as it may be confusing for testing
+                audioPlayer.src = '';
+                currentAudioUrl = null;
+                downloadBtn.disabled = true;
+            }
+        }
+        
+        // Download audio
+        function downloadAudio() {
+            if (currentAudioUrl) {
+                const a = document.createElement('a');
+                a.href = currentAudioUrl;
+                a.download = 'tts-audio.mp3';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+        
+        // Show status message
+        function showStatus(message, type = 'info') {
+            statusDiv.textContent = message;
+            statusDiv.className = type;
+        }
+        
+        // Convert base64 to Blob
+        function base64ToBlob(base64, type) {
+            const byteCharacters = atob(base64);
+            const byteArrays = [];
+            
+            for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+                const slice = byteCharacters.slice(offset, offset + 1024);
+                
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+            
+            return new Blob(byteArrays, { type });
+        }
+    </script>
+</body>
+</html> 

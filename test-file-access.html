@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test File Access</title>
+    <style>
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #0a0e17;
+            color: #ffffff;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #00ffe1;
+        }
+        .test-container {
+            margin-bottom: 30px;
+        }
+        .file-test {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #174aff;
+        }
+        .success {
+            border-color: #05ffa1;
+            color: #05ffa1;
+        }
+        .failed {
+            border-color: #ff2a6d;
+            color: #ff2a6d;
+        }
+        button {
+            background-color: rgba(0, 255, 225, 0.1);
+            color: #00ffe1;
+            border: 1px solid #00ffe1;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: rgba(0, 255, 225, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Code Viewer File Access Test</h1>
+    <p>This page tests if all project files are accessible via fetch requests.</p>
+    
+    <button id="run-tests">Run File Access Tests</button>
+    
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('run-tests').addEventListener('click', runTests);
+
+        const projectFiles = [
+            { project: 'Calculator', files: [
+                'projects/calculator/index.html',
+                'projects/calculator/style.css',
+                'projects/calculator/script.js'
+            ]},
+            { project: 'Weather App', files: [
+                'projects/weather-app/index.html',
+                'projects/weather-app/style.css',
+                'projects/weather-app/script.js'
+            ]},
+            { project: 'Todo List', files: [
+                'projects/todo-list/index.html',
+                'projects/todo-list/style.css',
+                'projects/todo-list/script.js'
+            ]},
+            { project: 'Password Generator', files: [
+                'projects/password-generator/index.html',
+                'projects/password-generator/style.css',
+                'projects/password-generator/script.js'
+            ]}
+        ];
+
+        async function testFileAccess(filePath) {
+            try {
+                const response = await fetch(filePath);
+                if (response.ok) {
+                    const content = await response.text();
+                    return { 
+                        success: true, 
+                        message: `Successfully loaded (${content.length} bytes)`,
+                        contentPreview: content.substring(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;') + '...' 
+                    };
+                } else {
+                    return { 
+                        success: false, 
+                        message: `Failed with status: ${response.status} ${response.statusText}` 
+                    };
+                }
+            } catch (error) {
+                return { 
+                    success: false, 
+                    message: `Error: ${error.message}` 
+                };
+            }
+        }
+
+        async function runTests() {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '<h2>Running tests...</h2>';
+
+            let allResults = '';
+
+            for (const project of projectFiles) {
+                let projectResults = `
+                    <div class="test-container">
+                        <h2>${project.project}</h2>
+                `;
+
+                for (const filePath of project.files) {
+                    const result = await testFileAccess(filePath);
+                    
+                    projectResults += `
+                        <div class="file-test ${result.success ? 'success' : 'failed'}">
+                            <strong>${filePath}</strong>: ${result.message}
+                            ${result.success ? `<div><small>${result.contentPreview}</small></div>` : ''}
+                        </div>
+                    `;
+                }
+
+                projectResults += '</div>';
+                allResults += projectResults;
+            }
+
+            resultsContainer.innerHTML = allResults;
+        }
+    </script>
+</body>
+</html> 

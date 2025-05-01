@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberVoice - AI Voice & Text Assistant</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="app-title">
+        <h1>CyberVoice</h1>
+        <span class="glitch-subtitle">AI Voice & Text Assistant</span>
+      </div>
+      <div class="header-controls">
+        <button class="control-button" id="api-settings-btn" title="API Settings">
+          <span class="icon">⚙️</span>
+        </button>
+        <button class="control-button" id="theme-toggle" title="Toggle theme">
+          <span class="icon">🌙</span>
+        </button>
+        <a href="../../index.html?skipIntro=true#projects" class="control-button" title="Back to portfolio">
+          <span class="icon">⬅️</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- API Settings Modal -->
+    <div class="modal" id="api-settings-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>API Settings</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="api-note">
+            Enter your own API keys below for unlimited use, or rely on the server's default keys (if configured, may be rate-limited).
+            Keys entered here are saved in your browser's local storage.
+          </p>
+
+          <div class="api-input-group">
+            <label for="gemini-key">Gemini API Key:</label>
+            <input type="password" id="gemini-key" placeholder="Enter your Gemini API key" class="cyber-input">
+          </div>
+
+          <div class="api-input-group">
+            <label for="speechify-key">Google TTS API Key:</label>
+            <input type="password" id="speechify-key" placeholder="Enter your Google TTS API key" class="cyber-input">
+          </div>
+          
+          <div class="api-status-message">
+            <h3>Server Key Status</h3>
+            <p>Status of keys configured in the server's <code>.env</code> file:</p>
+          </div>
+          
+          <div class="api-resources">
+            <h3>Get API Keys</h3>
+            <ul>
+              <li><a href="https://ai.google.dev/" target="_blank">Gemini API Key</a></li>
+              <li><a href="https://console.cloud.google.com/apis/library/texttospeech.googleapis.com" target="_blank">Google TTS API Key</a></li>
+            </ul>
+          </div>
+          
+          <div class="api-buttons">
+            <button class="cyber-button" id="save-api-keys">Save Keys</button>
+            <button class="cyber-button secondary" id="close-api-modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="app-content">
+      <div class="left-panel">
+        <div class="voice-controls">
+          <h2 class="panel-title">Voice Controls</h2>
+          
+          <div class="control-group">
+            <label for="voice-select">Voice:</label>
+            <select id="voice-select" class="cyber-select">
+              <option value="en-US-Standard-C">Standard Female (US)</option>
+              <option value="en-US-Standard-D">Standard Male (US)</option>
+              <option value="en-US-Standard-E">Standard Female 2 (US)</option>
+              <option value="en-GB-Standard-A">Standard Female (UK)</option>
+              <option value="en-GB-Standard-B">Standard Male (UK)</option>
+              <option value="en-AU-Standard-A">Standard Female (AU)</option>
+              <option value="en-AU-Standard-B">Standard Male (AU)</option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label for="language-select">Language:</label>
+            <select id="language-select" class="cyber-select">
+              <option value="en-US">English (US)</option>
+              <option value="en-GB">English (UK)</option>
+              <option value="es-ES">Spanish</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label for="model-select">Audio Quality:</label>
+            <select id="model-select" class="cyber-select">
+              <option value="MP3">MP3</option>
+              <option value="LINEAR16">WAV (High Quality)</option>
+              <option value="OGG_OPUS">OGG</option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label for="format-select">Audio Format:</label>
+            <select id="format-select" class="cyber-select">
+              <option value="mp3">MP3</option>
+              <option value="wav">WAV</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="system-status">
+          <h3>System Status</h3>
+          <div class="status-item">
+            <span class="status-label">Google TTS API:</span>
+            <span class="status-value" id="speechify-status">Connecting...</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Gemini API:</span>
+            <span class="status-value" id="gemini-status">Connecting...</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" id="processing-progress"></div>
+          </div>
+        </div>
+
+        <div class="audio-controls">
+          <h3>Audio Playback</h3>
+          <div class="audio-buttons">
+            <button class="audio-button" id="play-button" disabled>
+              <span class="icon">▶️</span> Play
+            </button>
+            <button class="audio-button" id="pause-button" disabled>
+              <span class="icon">⏸️</span> Pause
+            </button>
+            <button class="audio-button" id="stop-button" disabled>
+              <span class="icon">⏹️</span> Stop
+            </button>
+            <button class="audio-button" id="download-button" disabled>
+              <span class="icon">💾</span> Save
+            </button>
+          </div>
+          <audio id="audio-player" controls></audio>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <div class="editor-section">
+          <h2 class="panel-title">Text Input</h2>
+          <div class="text-editor-wrapper">
+            <textarea id="text-input" placeholder="Enter some text to convert to speech or generate with AI..."></textarea>
+          </div>
+          <div class="action-buttons">
+            <button class="cyber-button" id="generate-ai-btn">
+              <span class="icon">🤖</span> Generate with AI
+            </button>
+            <button class="cyber-button" id="convert-speech-btn">
+              <span class="icon">🔊</span> Convert to Speech
+            </button>
+            <button class="cyber-button secondary" id="clear-btn">
+              <span class="icon">🧹</span> Clear
+            </button>
+          </div>
+        </div>
+
+        <div class="ai-prompt-section">
+          <h2 class="panel-title">AI Prompt</h2>
+          <input type="text" id="ai-prompt" placeholder="Enter a prompt for the AI..." class="cyber-input">
+          <div class="preset-prompts">
+            <h3>Preset Prompts</h3>
+            <div class="preset-buttons">
+              <button class="preset-button" data-prompt="Write a short cyberpunk story.">Cyberpunk Story</button>
+              <button class="preset-button" data-prompt="Create a futuristic product description for a neural interface.">Product Description</button>
+              <button class="preset-button" data-prompt="Write a technical explanation of quantum computing.">Tech Explanation</button>
+              <button class="preset-button" data-prompt="Compose a poem about digital consciousness.">Poem</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="console-container">
+      <div class="console-header">
+        <span class="console-title">System Console</span>
+        <button class="console-toggle" id="console-toggle">▲</button>
+      </div>
+      <div class="console-content" id="console-output">
+        <div class="console-line">CyberVoice system initializing...</div>
+        <div class="console-line">Loading Speechify and Gemini API modules...</div>
+        <div class="console-line">Ready for input.</div>
+      </div>
+    </div>
+
+    <div class="notification" id="notification">
+      <div class="notification-content">
+        <span id="notification-message"></span>
+        <button class="notification-close" id="notification-close">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html> 

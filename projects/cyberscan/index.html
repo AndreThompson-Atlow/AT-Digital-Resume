@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberScan - System Scanner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scan-container">
+    <header class="scan-header">
+      <h1>CYBER<span>SCAN</span> v1.0</h1>
+      <div class="header-controls">
+        <button id="refresh-scan" class="control-button">Rescan System</button>
+        <a href="../../index.html" class="control-button">Back to Portfolio</a>
+      </div>
+    </header>
+
+    <div class="scan-content">
+      <div class="scan-overlay" id="scan-overlay">
+        <div class="scan-progress">
+          <div class="scan-progress-bar" id="scan-progress-bar"></div>
+        </div>
+        <div class="scan-status" id="scan-status">Initializing scanner...</div>
+      </div>
+
+      <div class="scan-report" id="scan-report">
+        <div class="scan-section">
+          <h2>System Information</h2>
+          <div class="scan-grid" id="system-info">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+
+        <div class="scan-section">
+          <h2>Browser Capabilities</h2>
+          <div class="scan-grid" id="browser-capabilities">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+
+        <div class="scan-section">
+          <h2>Hardware Information</h2>
+          <div class="scan-grid" id="hardware-info">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+
+        <div class="scan-section">
+          <h2>Network Analysis</h2>
+          <div class="scan-grid" id="network-info">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+
+        <div class="scan-section">
+          <h2>Security Assessment</h2>
+          <div class="security-gauge-container">
+            <div class="security-gauge">
+              <div class="gauge-track">
+                <div class="gauge-fill" id="security-gauge-fill"></div>
+              </div>
+              <div class="gauge-center">
+                <div class="gauge-value" id="security-gauge-value">0%</div>
+              </div>
+            </div>
+            <div class="security-label">Security Score</div>
+          </div>
+          <div class="scan-grid" id="security-info">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+
+        <div class="scan-section">
+          <h2>Performance Metrics</h2>
+          <div class="performance-charts">
+            <div class="chart-container">
+              <canvas id="resources-chart"></canvas>
+              <div class="chart-label">Resource Usage</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="performance-chart"></canvas>
+              <div class="chart-label">Performance Factors</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scan-section vulnerabilities">
+          <h2>Detected Vulnerabilities</h2>
+          <div class="vulnerability-list" id="vulnerability-list">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+
+        <div class="scan-section recommendations">
+          <h2>Recommendations</h2>
+          <ul class="recommendation-list" id="recommendation-list">
+            <!-- Will be filled by JavaScript -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer class="scan-footer">
+      <p>CyberScan is a demonstration tool. For entertainment purposes only. Not actually scanning your system.</p>
+      <p>Created by Andre Thompson | All cyberpunk visuals are simulated</p>
+    </footer>
+  </div>
+
+  <!-- Audio effects -->
+  <audio id="scan-start" src="https://www.soundjay.com/buttons/sounds/button-09a.mp3"></audio>
+  <audio id="scan-progress" src="https://www.soundjay.com/mechanical/sounds/scanner-01.mp3" loop></audio>
+  <audio id="scan-complete" src="https://www.soundjay.com/buttons/sounds/button-14.mp3"></audio>
+  <audio id="alert-sound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andre Thompson - Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0e17;
+            --primary-color: #00ffe1; /* Neon Cyan */
+            --secondary-color: #ffcc00; /* Neon Yellow */
+            --accent-color: #174aff; /* Neon Blue */
+            --danger-color: #ff2a6d; /* Neon Pink */
+            --success-color: #05ffa1; /* Neon Green */
+            --dark-bg: #0a0e17;
+            --darker-bg: #070b12;
+            --light-bg: #1a1e27;
+            --text-color: #ffffff;
+            --font-mono: 'Share Tech Mono', monospace;
+            --font-display: 'VT323', monospace;
+            --border-radius: 4px;
+        }
+
+        @page {
+            size: letter;
+            margin: 0.5in;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .print-controls {
+            background: var(--darker-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 255, 225, 0.2);
+        }
+
+        .print-button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            font-family: var(--font-mono);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .print-button:hover {
+            background: rgba(0, 255, 225, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 225, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(0, 255, 225, 0.5);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .contact-item {
+            color: var(--text-color);
+        }
+
+        .contact-item a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-color);
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 8px var(--primary-color);
+        }
+
+        .job {
+            background: var(--darker-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 18px;
+        }
+
+        .job-company {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .job-date {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-left: 5px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .skill {
+            background: rgba(0, 255, 225, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+        }
+
+        .circuit-decoration {
+            height: 1px;
+            background: var(--primary-color);
+            position: relative;
+            margin: 25px 0;
+            opacity: 0.6;
+        }
+
+        .circuit-decoration::before, .circuit-decoration::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            top: -2.5px;
+        }
+
+        .circuit-decoration::before {
+            left: 30%;
+        }
+
+        .circuit-decoration::after {
+            right: 30%;
+        }
+
+        .highlight {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .project {
+            background: var(--darker-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .project-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tech-tag {
+            background: rgba(23, 74, 255, 0.2);
+            color: var(--accent-color);
+            padding: 3px 6px;
+            border-radius: var(--border-radius);
+            font-size: 12px;
+            border: 1px solid var(--accent-color);
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background-color: white;
+                color: black;
+            }
+            .print-controls {
+                display: none;
+            }
+            .header, h2 {
+                border-bottom-color: #00ffe1;
+            }
+            h1 {
+                text-shadow: none;
+                color: #00ffe1;
+            }
+            h2, .job-company {
+                color: #00ffe1;
+            }
+            .job-title, .highlight, .project-title {
+                color: #ffcc00;
+            }
+            .header::after, h2::after {
+                box-shadow: none;
+            }
+            .job, .project {
+                background: #f5f5f5;
+                border-color: #ccc;
+            }
+            li::before {
+                color: #00ffe1;
+            }
+            .skill {
+                background: rgba(0, 255, 225, 0.1);
+                color: #00ffe1;
+                border-color: #ccc;
+            }
+            .tech-tag {
+                background: rgba(23, 74, 255, 0.1);
+                color: #174aff;
+                border-color: #ccc;
+            }
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-controls">
+        <p>This is a printable version of Andre Thompson's resume. <br>Use your browser's print function (Ctrl+P or ⌘+P) to save as PDF or print.</p>
+        <button class="print-button" onclick="window.print()">Print or Save as PDF</button>
+    </div>
+
+    <div class="header">
+        <h1>ANDRE THOMPSON</h1>
+        <div style="font-size: 18px; color: var(--secondary-color);">Software Engineer</div>
+        <div class="contact-info">
+            <div class="contact-item">📧 <a href="mailto:andrethompsoncs@gmail.com">andrethompsoncs@gmail.com</a></div>
+            <div class="contact-item">📱 <a href="tel:+13852909292">(385) 290-9292</a></div>
+            <div class="contact-item">📍 Salt Lake City, Utah</div>
+            <div class="contact-item">💼 <a href="https://www.linkedin.com/in/andre-thompson-slc/" target="_blank">linkedin.com/in/andre-thompson-slc</a></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>PROFESSIONAL SUMMARY</h2>
+        <p>Software Engineer with <span class="highlight">over three years</span> of professional experience in designing and implementing user interfaces, enhancing web functionality, and writing efficient and maintainable code. Strong background in frontend frameworks with experience in both client and server-side development. Passionate about creating <span class="highlight">performant, accessible</span> applications with exceptional user experiences.</p>
+    </div>
+
+    <div class="circuit-decoration"></div>
+
+    <div class="section">
+        <h2>WORK EXPERIENCE</h2>
+        
+        <div class="job">
+            <div class="job-title">Software Engineer</div>
+            <div class="job-company">Cricut</div>
+            <div class="job-date">April 2021 - Present</div>
+            <ul>
+                <li>Contributed to the Design Space desktop application, achieving a <span class="highlight">50% improvement</span> in critical component performance</li>
+                <li>Helped onboard 10+ new developers to projects with clear documentation and knowledge-sharing sessions</li>
+                <li>Collaborated with UX designers to create intuitive user interfaces and implement enhanced user experiences</li>
+                <li>Developed and maintained core application features using React, TypeScript, and Electron</li>
+            </ul>
+        </div>
+        
+        <div class="job">
+            <div class="job-title">Advanced Repair Agent</div>
+            <div class="job-company">Geek Squad (Best Buy)</div>
+            <div class="job-date">February 2018 - April 2021</div>
+            <ul>
+                <li>Performed diagnostics and repairs on a variety of hardware devices</li>
+                <li>Provided technical consultations and solutions to complex customer problems</li>
+                <li>Maintained high customer satisfaction ratings through effective problem-solving</li>
+                <li>Developed scripts to automate routine maintenance tasks</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="circuit-decoration"></div>
+
+    <div class="section">
+        <h2>TECHNICAL SKILLS</h2>
+        <div class="skills">
+            <span class="skill">HTML5</span>
+            <span class="skill">CSS3</span>
+            <span class="skill">JavaScript (ES6+)</span>
+            <span class="skill">TypeScript</span>
+            <span class="skill">React</span>
+            <span class="skill">Redux</span>
+            <span class="skill">Angular</span>
+            <span class="skill">Node.js</span>
+            <span class="skill">Express</span>
+            <span class="skill">MongoDB</span>
+            <span class="skill">Git</span>
+            <span class="skill">C#</span>
+            <span class="skill">C++</span>
+            <span class="skill">Electron</span>
+            <span class="skill">API Integration</span>
+            <span class="skill">UI/UX Design</span>
+        </div>
+    </div>
+
+    <div class="circuit-decoration"></div>
+
+    <div class="section">
+        <h2>EDUCATION</h2>
+        <div class="job">
+            <div class="job-title">Bachelor of Science in Computer Science</div>
+            <div class="job-company">University of Utah</div>
+            <div class="job-date">2018</div>
+        </div>
+    </div>
+
+    <div class="circuit-decoration"></div>
+
+    <div class="section">
+        <h2>PROJECTS</h2>
+        <div class="project">
+            <div class="project-title">CyberCalc</div>
+            <p>A stylish cyberpunk-themed calculator with glowing effects, animations, and sound feedback.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">Event Handling</span>
+            </div>
+        </div>
+        
+        <div class="project">
+            <div class="project-title">CyberWeather</div>
+            <p>A cyberpunk-styled weather application with animated effects, forecast visualization, and live data.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">API Integration</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">Async/Await</span>
+            </div>
+        </div>
+        
+        <div class="project">
+            <div class="project-title">CyberCrypt</div>
+            <p>A secure password generator with strength analysis, entropy calculation, and customizable options.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Cryptography</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">Security</span>
+            </div>
+        </div>
+        
+        <div class="project">
+            <div class="project-title">CyberTasks</div>
+            <p>A futuristic task management app with priority levels, filtering capabilities, and persistent local storage.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">LocalStorage</span>
+                <span class="tech-tag">CSS Grid</span>
+                <span class="tech-tag">UI Design</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
