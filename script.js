@@ -991,9 +991,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function createPieChart() {
       const canvas = document.getElementById('pie-chart');
-      const ctx = canvas.getContext('2d');
+      if (!canvas) return;
+      const container = canvas.parentElement;
       
-      // Clear canvas
+      // Set canvas dimensions based on container size
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight > 100 ? container.clientHeight : 150; // Ensure minimum height
+      
+      const ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Data for pie chart
@@ -1051,9 +1056,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function createBarChart() {
       const canvas = document.getElementById('bar-chart');
+      if (!canvas) return;
+      const container = canvas.parentElement;
+
+      // Set canvas dimensions based on container size
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight > 100 ? container.clientHeight : 150; // Ensure minimum height
+
       const ctx = canvas.getContext('2d');
-      
-      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Data for bar chart
@@ -1095,9 +1105,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function createLineChart() {
       const canvas = document.getElementById('line-chart');
+      if (!canvas) return;
+      const container = canvas.parentElement;
+
+      // Set canvas dimensions based on container size
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight > 100 ? container.clientHeight : 150; // Ensure minimum height
+
       const ctx = canvas.getContext('2d');
-      
-      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Data for line chart
@@ -1157,9 +1172,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function createFunctionPlot() {
       const canvas = document.getElementById('function-plot');
-      const ctx = canvas.getContext('2d');
+      if (!canvas) return;
+      const container = canvas.parentElement;
       
-      // Clear canvas
+      // Set canvas dimensions based on container size
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight > 100 ? container.clientHeight : 150; // Ensure minimum height
+      
+      const ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Function to plot: f(x) = sin(x) * x/5
