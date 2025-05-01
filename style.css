@@ -37,8 +37,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Add smooth scrolling */
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; /* Enable smooth scrolling */
   }
   
   body {
@@ -47,8 +46,7 @@
     font-family: var(--font-mono);
     line-height: 1.6;
     overflow-x: hidden;
-    /* Subtle background flicker */
-    animation: bgFlicker 10s infinite;
+    animation: bgFlicker 10s infinite; /* Subtle background animation */
   }
   
   @keyframes bgFlicker {
@@ -274,7 +272,7 @@
     transition: all 0.3s;
     text-shadow: 0 0 10px rgba(0, 255, 225, 0.5);
     position: relative;
-    user-select: none; /* Prevent text selection while triple-clicking */
+    user-select: none; /* Prevent text selection */
   }
   
   .logo:hover {
@@ -543,7 +541,7 @@
     letter-spacing: 1px;
     margin-top: 1rem;
     cursor: pointer;
-    outline: none;
+    outline: none; /* Use custom focus styles */
   }
   
   .btn::before {
@@ -558,14 +556,15 @@
     z-index: -1;
   }
   
-  .btn:focus-visible {
+  .btn:focus-visible { /* Custom focus state */
     color: var(--secondary-color);
     border-color: var(--secondary-color);
     box-shadow: 0 0 15px rgba(0, 255, 225, 0.5), 0 0 5px var(--primary-color) inset;
     text-shadow: 0 0 5px var(--secondary-color);
   }
   
-  .btn:hover::before {
+  .btn:hover::before,
+  .btn:focus-visible::before { /* Apply shimmer effect on hover/focus */
     left: 100%;
   }
   
@@ -758,11 +757,11 @@
   }
   
   .project-filter-btn:hover,
-  .project-filter-btn:focus-visible {
+  .project-filter-btn:focus-visible { /* Custom focus state */
     background: rgba(23, 74, 255, 0.2);
     color: var(--primary-color);
     box-shadow: 0 0 8px rgba(0, 255, 225, 0.4);
-    outline: none;
+    outline: none; /* Use custom focus styles */
   }
   
   .project-filter-btn.active {
@@ -772,7 +771,7 @@
     box-shadow: 0 0 10px rgba(0, 255, 225, 0.5);
   }
   
-  .project-filter-btn.active:focus-visible {
+  .project-filter-btn.active:focus-visible { /* Custom focus state for active filter */
     box-shadow: 0 0 10px rgba(0, 255, 225, 0.5), 0 0 3px var(--primary-color) inset;
   }
   
@@ -886,14 +885,14 @@
   }
   
   .project-link:hover,
-  .project-link:focus-visible {
+  .project-link:focus-visible { /* Custom focus state */
     color: var(--secondary-color);
     text-shadow: 0 0 5px var(--secondary-color);
-    outline: none;
+    outline: none; /* Use custom focus styles */
   }
   
   .project-link:hover .link-icon,
-  .project-link:focus-visible .link-icon {
+  .project-link:focus-visible .link-icon { /* Animate icon on hover/focus */
     transform: translateX(3px);
   }
   
@@ -942,10 +941,10 @@
   }
   
   .contact-text a:hover,
-  .contact-text a:focus-visible {
+  .contact-text a:focus-visible { /* Custom focus state */
     color: var(--primary-color);
     text-shadow: 0 0 5px var(--primary-color);
-    outline: none;
+    outline: none; /* Use custom focus styles */
   }
   
   /* Contact Form */
@@ -1014,7 +1013,7 @@
   }
   
   .input-container input:focus, 
-  textarea:focus {
+  textarea:focus { /* Custom focus styles for inputs */
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 10px rgba(0, 255, 225, 0.3);
@@ -1850,10 +1849,10 @@
   }
   
   .theme-toggle:hover,
-  .theme-toggle:focus-visible {
+  .theme-toggle:focus-visible { /* Custom focus state */
     background: rgba(0, 255, 225, 0.2);
     box-shadow: 0 0 10px rgba(0, 255, 225, 0.4);
-    outline: none;
+    outline: none; /* Use custom focus styles */
     border: 1px solid var(--secondary-color);
   }
   
@@ -1862,7 +1861,7 @@
   }
   
   .light-theme .theme-toggle:hover,
-  .light-theme .theme-toggle:focus-visible {
+  .light-theme .theme-toggle:focus-visible { /* Custom focus state (light) */
     background: rgba(0, 102, 204, 0.2);
     box-shadow: 0 0 10px rgba(0, 102, 204, 0.4);
     border: 1px solid var(--secondary-color);
@@ -1903,15 +1902,15 @@
   }
   
   .pagination-btn:hover:not(:disabled),
-  .pagination-btn:focus-visible:not(:disabled) {
+  .pagination-btn:focus-visible:not(:disabled) { /* Custom focus state */
     color: var(--secondary-color);
     border-color: var(--secondary-color);
     box-shadow: 0 0 15px rgba(0, 255, 225, 0.5);
-    outline: none;
+    outline: none; /* Use custom focus styles */
   }
   
   .pagination-btn:hover:not(:disabled)::before,
-  .pagination-btn:focus-visible:not(:disabled)::before {
+  .pagination-btn:focus-visible:not(:disabled)::before { /* Apply shimmer effect on hover/focus */
     left: 100%;
   }
   
@@ -1935,7 +1934,7 @@
   }
   
   .light-theme .pagination-btn:hover:not(:disabled),
-  .light-theme .pagination-btn:focus-visible:not(:disabled) {
+  .light-theme .pagination-btn:focus-visible:not(:disabled) { /* Custom focus state (light) */
     color: var(--secondary-color);
     border-color: var(--secondary-color);
     box-shadow: 0 0 15px rgba(0, 102, 204, 0.5);
@@ -2021,7 +2020,7 @@
     100% { text-shadow: 2px 0 #ff0000, -2px 0 #00ff00; }
   }
   
-  /* Add focus styles for terminal/console controls if needed */
+  /* Focus states for specific UI elements */
   .terminal-controls span:focus-visible,
   .console-controls span:focus-visible,
   .panel-controls span:focus-visible {
@@ -2030,7 +2029,7 @@
     transform: scale(1.1);
   }
   
-  #music-control:focus-visible {
+  #music-control:focus-visible { /* Custom focus state */
     background: rgba(23, 74, 255, 0.4);
     color: var(--secondary-color);
     text-shadow: 0 0 5px var(--secondary-color);
@@ -2038,7 +2037,7 @@
     outline: 1px solid var(--secondary-color);
   }
   
-  #console-input:focus-visible {
+  #console-input:focus-visible { /* Custom focus state */
     outline: 1px solid var(--primary-color);
     box-shadow: 0 0 8px var(--primary-color);
   }

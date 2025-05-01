@@ -1,4 +1,3 @@
-console.log("CyberTrivia script loaded.");
 // Future JavaScript for trivia game logic 
 
 document.addEventListener('DOMContentLoaded', () => {

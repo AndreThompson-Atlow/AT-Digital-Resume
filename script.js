@@ -1,55 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Ensure page starts at the top
+    // Ensure page starts at the top on load
     window.scrollTo(0, 0);
     
-    // Track loaded dynamic elements
+    // State tracking for dynamically loaded elements
     let dynamicElementsLoaded = {
       commandConsole: false,
       visualizationPanel: false,
       codePanel: false
     };
     
-    // Initialize only essential features first
+    // Initialize essential features immediately
     initEssentialFeatures();
     
-    // Lazy load non-essential features
+    // Lazy load non-essential features for performance
     if ('IntersectionObserver' in window) {
       lazyLoadFeatures();
     } else {
-      // Fallback for browsers that don't support IntersectionObserver
+      // Fallback for older browsers
       window.addEventListener('load', initNonEssentialFeatures);
     }
     
-    // Initialize only the essential features needed for initial view
+    // Initialize features required for above-the-fold content and core functionality
     function initEssentialFeatures() {
-      // Terminal intro animation
       initTerminal();
-      
-      // Typing effect for hero section
       initTypingEffect();
-      
-      // Mobile menu toggle
       initMobileMenu();
-      
-      // Form handling
       initContactForm();
-      
-      // Resume download handling
       initResumeDownload();
-      
-      // Theme toggle
       initThemeToggle();
-      
-      // Initialize Konami Code easter egg
       initKonamiCode();
     }
     
-    // Lazy load features as they come into viewport
+    // Lazy load features as they enter the viewport
     function lazyLoadFeatures() {
       const featureSections = {
         'skills': () => animateSkillBars(),
         'projects': () => initProjectCards(),
-        'contact': () => {} // Contact form already initialized
+        'contact': () => {} // Contact form already initialized in essentials
       };
       
       const sectionObserver = new IntersectionObserver((entries) => {
@@ -111,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
     
-    // Terminal intro animation
+    // Handles the initial terminal animation sequence
     function initTerminal() {
       const terminal = document.getElementById('terminal');
       const terminalOverlay = document.getElementById('terminal-overlay');
@@ -119,18 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const terminalClose = document.querySelector('.terminal-close');
       let lineIndex = 0;
       
-      // Check URL parameters for skipIntro
       const urlParams = new URLSearchParams(window.location.search);
       const shouldSkipIntro = urlParams.get('skipIntro') === 'true';
       
-      // Check localStorage for last intro time
+      // Prevent showing intro repeatedly within a short time frame
       const lastIntroTime = localStorage.getItem('terminalIntroLastShown');
       const currentTime = Date.now();
       const tenMinutesInMs = 10 * 60 * 1000; 
       
-      // Skip intro if URL parameter is set, or if less than 10 minutes have passed since last showing
       if (shouldSkipIntro || (lastIntroTime && (currentTime - parseInt(lastIntroTime)) < tenMinutesInMs)) {
-        // Immediately hide terminal elements
         terminal.classList.add('hidden');
         terminalOverlay.classList.add('hidden');
         document.body.classList.remove('terminal-active');
@@ -138,63 +122,40 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      // Store current time as last shown time
       localStorage.setItem('terminalIntroLastShown', currentTime.toString());
       
-      // Make sure terminal and overlay are visible at start
       terminal.classList.remove('hidden');
       terminalOverlay.classList.remove('hidden');
+      document.body.classList.add('terminal-active'); // Prevent body scroll
       
-      // Prevent scrolling while terminal is active
-      document.body.classList.add('terminal-active');
-      
-      // Hide all lines initially
-      lines.forEach(line => {
-        line.style.display = 'none';
-      });
-      
-      // Allow skipping the intro
+      lines.forEach(line => { line.style.display = 'none'; });
       terminalClose.addEventListener('click', skipIntro);
       
       function skipIntro() {
-        // Remove event listener to prevent multiple calls
         terminalClose.removeEventListener('click', skipIntro);
-        
-        // Hide terminal immediately
         terminal.style.opacity = '0';
         terminalOverlay.style.opacity = '0';
         setTimeout(() => {
           terminal.classList.add('hidden');
           terminalOverlay.classList.add('hidden');
-          
-          // Allow scrolling again
           document.body.classList.remove('terminal-active');
-          
-          startCodeRain(); // Start the Matrix-like code rain
-          
-          // Scroll to home section
+          startCodeRain();
           scrollToHome();
         }, 500);
       }
       
-      // Function to scroll to home section
       function scrollToHome() {
         const homeSection = document.getElementById('home');
         if (homeSection) {
-          // Scroll to home with a slight delay for smoother transition
           setTimeout(() => {
-            homeSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
+            homeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }, 100);
         }
       }
       
-      // Start the terminal animation
       setTimeout(showNextLine, 1000);
       
-      // Show lines one by one with a typing effect
+      // Display terminal lines sequentially with typing effect
       function showNextLine() {
         if (lineIndex < lines.length) {
           lines[lineIndex].style.display = 'block';
@@ -210,26 +171,21 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(showNextLine, 500);
           }
         } else {
-          // Show a quick notification about the intro being saved
+          // Add notification about skipping intro
           const saveNotification = document.createElement('div');
           saveNotification.className = 'line';
-          saveNotification.innerHTML = '<span class="blue">INFO:</span> This intro will be hidden for 10 minutes. Type "reset" in console to show it again.';
+          saveNotification.innerHTML = '<span class="blue">INFO:</span> Intro sequence skipped for 10 mins. Use `reset intro` in console to show again.';
           document.querySelector('.terminal-content').appendChild(saveNotification);
           
-          // Wait a bit more before hiding
+          // Hide terminal after showing notification
           setTimeout(() => {
             terminal.style.opacity = '0';
             terminalOverlay.style.opacity = '0';
             setTimeout(() => {
               terminal.classList.add('hidden');
               terminalOverlay.classList.add('hidden');
-              
-              // Allow scrolling again
               document.body.classList.remove('terminal-active');
-              
-              startCodeRain(); // Start the Matrix-like code rain
-              
-              // Scroll to home section
+              startCodeRain();
               scrollToHome();
             }, 500);
           }, 2000);
@@ -237,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     
-    // Simulate typing effect
+    // Simulates a typing effect for a given element
     function typingEffect(element, callback) {
       const text = element.textContent;
       element.textContent = '';
@@ -256,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
       type();
     }
     
-    // Matrix-like code rain animation
+    // Creates the Matrix-style code rain background effect
     function startCodeRain() {
       const canvas = document.getElementById('code-rain');
       const ctx = canvas.getContext('2d');
@@ -324,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
       draw();
     }
     
-    // Animate skill bars when they come into view
+    // Animates the skill bars when the skills section is visible
     function animateSkillBars() {
       const skillBars = document.querySelectorAll('.skill-bar');
       
@@ -333,8 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bar.style.width = level + '%';
       });
     }
-  
-    // Type writing effect for hero section
+    
+    // Initializes the typing/erasing effect for the hero subtitle
     function initTypingEffect() {
       const typedTextSpan = document.querySelector(".typed-text");
       const cursorSpan = document.querySelector(".typed-text + .cursor");
@@ -379,32 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Start typing effect when page loads
       if(textArray.length) setTimeout(type, newTextDelay + 250);
     }
-  
-    // Smooth Scrolling for Navigation Links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if(targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          // Play click sound
-          const clickSound = document.getElementById('click-sound');
-          clickSound.currentTime = 0;
-          clickSound.play();
-          
-          // Smooth scroll to target
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-  
-    // Mobile Menu Toggle
+    
+    // Sets up the mobile navigation menu toggle
     function initMobileMenu() {
       const menuToggle = document.getElementById('menu-toggle');
       const navLinks = document.getElementById('nav-links');
@@ -418,36 +350,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickSound = document.getElementById('click-sound');
         if (clickSound) {
           clickSound.currentTime = 0;
-          clickSound.play().catch(e => console.log('Audio play prevented by browser'));
+          clickSound.play().catch(e => {}); // Ignore play errors
         }
       });
     }
-  
-    // Scroll animations for sections
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.25
-    };
     
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in');
-          
-          // If it's the skills section, animate the skill bars
-          if (entry.target.id === 'skills') {
-            animateSkillBars();
-          }
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.section').forEach(section => {
-      observer.observe(section);
-    });
-  
-    // Play sound on project card hover
+    // Handles project filtering and pagination
     function initProjectCards() {
       // Elements
       const hoverSound = document.getElementById('hover-sound');
@@ -602,10 +510,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       projectCards.forEach(card => {
         card.addEventListener('mouseenter', () => {
-          if (!isMobileDevice()) { // Only play sound on non-mobile devices
+          if (!isMobileDevice()) {
             hoverSound.currentTime = 0;
-            hoverSound.volume = 0.2; // Lower volume
-            hoverSound.play().catch(e => console.log('Audio play prevented by browser'));
+            hoverSound.volume = 0.2;
+            hoverSound.play().catch(e => {}); // Ignore play errors
           }
         });
       });
@@ -614,14 +522,14 @@ document.addEventListener('DOMContentLoaded', () => {
       updatePagination();
     }
     
-    // Detect if user is on a mobile device
+    // Detects if the user is likely on a mobile device
     function isMobileDevice() {
       return (window.innerWidth <= 768) || 
              ('ontouchstart' in window) || 
              (navigator.maxTouchPoints > 0);
     }
   
-    // Easter Egg: Triple click logo for hack mode, single click for home
+    // Easter Egg: Triple click logo for hack mode
     const logo = document.getElementById('logo');
     const easterEgg = document.getElementById('easter-egg');
     const easterSound = document.getElementById('easter-sound');
@@ -652,43 +560,33 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Set timer to reset click count after 500ms
       clickTimer = setTimeout(() => {
-        // If it was a triple click, show hack mode
         if (clickCount === 3) {
-          // Activate hack mode
           easterEgg.classList.remove('hidden');
           easterSound.currentTime = 0;
-          easterSound.play().catch(e => console.log('Audio play prevented by browser'));
+          easterSound.play().catch(e => {}); // Ignore play errors
           
-          // Add console hack command
           if (dynamicElementsLoaded.commandConsole) {
             const consoleOutput = document.getElementById('console-output');
             const hackLine = document.createElement('div');
             hackLine.className = 'console-line';
-            hackLine.innerHTML = '<span style="color:#ff2a6d;">ATTENTION:</span> Backdoor access granted. Type "hack" to initiate.';
+            hackLine.innerHTML = '<span style="color:#ff2a6d;">ATTENTION:</span> Backdoor access granted. Use `hack` command.';
             consoleOutput.appendChild(hackLine);
             consoleOutput.scrollTop = consoleOutput.scrollHeight;
           }
         } 
-        // If it was a single click, scroll to home
         else if (clickCount === 1) {
-          // Scroll to home section
           const homeSection = document.getElementById('home');
           if (homeSection) {
-            // Play click sound
             const clickSound = document.getElementById('click-sound');
             if (clickSound) {
               clickSound.currentTime = 0;
-              clickSound.play().catch(e => console.log('Audio play prevented by browser'));
+              clickSound.play().catch(e => {}); // Ignore play errors
             }
-            
-            homeSection.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
+            homeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }
         
-        // Reset click count and appearance
+        // Reset state
         clickCount = 0;
         logo.style.color = '';
         logo.style.textShadow = '';
@@ -699,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
       easterEgg.classList.add('hidden');
     });
   
-    // Fake System Pop-up Alert
+    // Displays a temporary system alert pop-up
     function showSystemPopup() {
       const messages = [
         "System Breach Detected! Running Diagnostics...",
@@ -720,52 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 3500);
     }
     
-    // Trigger system popup after a delay, and then periodically with random intervals
-    setTimeout(() => {
-      showSystemPopup();
-      
-      setInterval(() => {
-        if (Math.random() < 0.3) { // 30% chance to show popup
-          showSystemPopup();
-        }
-      }, 15000 + Math.random() * 20000); // Random interval between 15-35 seconds
-    }, 8000);
-  
-    // Toggle Hacker Dashboard
-    const dashboard = document.getElementById('hacker-dashboard');
-    const dashboardHeader = document.querySelector('.dashboard-header');
-    
-    dashboardHeader.addEventListener('click', () => {
-      dashboard.classList.toggle('collapsed');
-    });
-  
-    // Animate dashboard meters independently
-    const meters = document.querySelectorAll('.meter span');
-    
-    meters.forEach(meter => {
-      const randomDuration = 3 + Math.random() * 4; // Random duration between 3-7 seconds
-      meter.style.animation = `meterAnimation ${randomDuration}s ease-in-out infinite`;
-    });
-  
-    // Music Control Toggle
-    const musicControl = document.getElementById('music-control');
-    const bgMusic = document.getElementById('bg-music');
-    
-    musicControl.addEventListener('click', () => {
-      if (bgMusic.muted) {
-        bgMusic.muted = false;
-        bgMusic.volume = 0.3; // Set volume to 30%
-        musicControl.textContent = "Mute Music";
-        musicControl.style.color = "#ffcc00";
-        bgMusic.play();
-      } else {
-        bgMusic.muted = true;
-        musicControl.textContent = "Unmute Music";
-        musicControl.style.color = "#00ffe1";
-      }
-    });
-  
-    // Contact Form Submission
+    // Initializes the contact form submission handling
     function initContactForm() {
       const contactForm = document.getElementById('contact-form');
       const formStatus = document.getElementById('form-status');
@@ -841,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const successSound = document.getElementById('console-success');
           if (successSound) {
             successSound.currentTime = 0;
-            successSound.play().catch(e => console.log('Audio play prevented by browser'));
+            successSound.play().catch(e => {}); // Ignore play errors
           }
         })
         .catch(error => {
@@ -860,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const errorSound = document.getElementById('console-error');
           if (errorSound) {
             errorSound.currentTime = 0;
-            errorSound.play().catch(e => console.log('Audio play prevented by browser'));
+            errorSound.play().catch(e => {}); // Ignore play errors
           }
         })
         .finally(() => {
@@ -872,8 +725,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     }
-  
-    // Command Console functionality
+    
+    // Initializes the command console functionality
     function initCommandConsole() {
       const commandConsole = document.getElementById('command-console');
       const consoleInput = document.getElementById('console-input');
@@ -1089,7 +942,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 11000);
     }
     
-    // Initialize data visualization charts
+    // Initializes the data visualization panels (charts)
     function initDataVisualization() {
       setTimeout(() => {
         const dataVisualizationPanel = document.getElementById('data-visualization-panel');
@@ -1360,7 +1213,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.functionPlot = { resize: createFunctionPlot };
     }
     
-    // Code panel animation
+    // Initializes the live coding simulation panel
     function initCodePanel() {
       setTimeout(() => {
         const codePanel = document.getElementById('code-panel');
@@ -1443,76 +1296,14 @@ document.addEventListener('DOMContentLoaded', () => {
       highlightNextLine();
     }
     
-    // Initialize all dynamic elements
+    // Initializes all dynamic UI elements (panels, dashboard)
     function initDynamicElements() {
       initCommandConsole();
       initDataVisualization();
       initCodePanel();
     }
     
-    // Keyboard shortcuts for "hacker" experience
-    document.addEventListener('keydown', (e) => {
-      // Ctrl + Space to toggle command console
-      if (e.ctrlKey && e.code === 'Space') {
-        e.preventDefault();
-        const commandConsole = document.getElementById('command-console');
-        commandConsole.classList.toggle('active');
-        
-        if (commandConsole.classList.contains('active')) {
-          document.getElementById('console-input').focus();
-        }
-      }
-      
-      // Ctrl + D to toggle dashboard
-      if (e.ctrlKey && e.code === 'KeyD') {
-        e.preventDefault();
-        dashboard.classList.toggle('collapsed');
-      }
-      
-      // Ctrl + V to toggle visualization panel
-      if (e.ctrlKey && e.code === 'KeyV') {
-        e.preventDefault();
-        const vizPanel = document.getElementById('data-visualization-panel');
-        vizPanel.classList.toggle('visible');
-        
-        if (vizPanel.classList.contains('visible') && !dynamicElementsLoaded.visualizationPanel) {
-          createPieChart();
-          createBarChart();
-          createLineChart();
-          createFunctionPlot();
-          dynamicElementsLoaded.visualizationPanel = true;
-        }
-      }
-      
-      // Ctrl + K to toggle code panel
-      if (e.ctrlKey && e.code === 'KeyK') {
-        e.preventDefault();
-        const codePanel = document.getElementById('code-panel');
-        codePanel.classList.toggle('visible');
-        
-        if (codePanel.classList.contains('visible') && !dynamicElementsLoaded.codePanel) {
-          animateCode();
-          dynamicElementsLoaded.codePanel = true;
-        }
-      }
-    });
-    
-    // Window resize event handler
-    window.addEventListener('resize', () => {
-      const codeRainCanvas = document.getElementById('code-rain');
-      if (codeRainCanvas) {
-        codeRainCanvas.width = window.innerWidth;
-        codeRainCanvas.height = window.innerHeight;
-      }
-      
-      // Resize charts if they exist
-      if (window.pieChart) window.pieChart.resize();
-      if (window.barChart) window.barChart.resize();
-      if (window.lineChart) window.lineChart.resize();
-      if (window.functionPlot) window.functionPlot.resize();
-    });
-    
-    // Handle resume download with fallback
+    // Adds functionality to the resume download button
     function initResumeDownload() {
       const resumeBtn = document.querySelector('.btn-download');
       if (!resumeBtn) return;
@@ -1556,7 +1347,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
     
-    // Theme toggle functionality
+    // Sets up the theme toggling functionality
     function initThemeToggle() {
       const themeToggle = document.getElementById('theme-toggle');
       const themeIcon = themeToggle.querySelector('.theme-icon');
@@ -1585,12 +1376,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickSound = document.getElementById('click-sound');
         if (clickSound) {
           clickSound.currentTime = 0;
-          clickSound.play().catch(e => console.log('Audio play prevented by browser'));
+          clickSound.play().catch(e => {}); // Ignore play errors
         }
       });
     }
     
-    // Konami Code Easter Egg (↑ ↑ ↓ ↓ ← → ← → B A)
+    // Initializes the Konami code easter egg listener
     function initKonamiCode() {
       const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
       let konamiIndex = 0;
