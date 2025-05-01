@@ -134,6 +134,16 @@
     100% { box-shadow: 0 0 20px rgba(0, 255, 225, 0.3); }
   }
   
+  /* Styles for minimized terminal */
+  #terminal.minimized {
+    height: auto; /* Allow height to shrink to content */
+  }
+  
+  #terminal.minimized .terminal-content,
+  #terminal.minimized .terminal-footer {
+    display: none; /* Hide content and footer */
+  }
+  
   /* Terminal overlay to hide content */
   .terminal-overlay {
     position: fixed;
@@ -1419,8 +1429,9 @@
     border: 1px solid rgba(0, 255, 225, 0.3);
     border-radius: var(--border-radius);
     padding: 10px;
-    flex: 1 1 calc(50% - 10px);
+    flex: 1 1 calc(50% - 10px); /* Adjust flex basis */
     min-width: 120px;
+    box-sizing: border-box; /* Include padding in size */
   }
   
   .chart-item h4 {
@@ -1429,6 +1440,13 @@
     margin-bottom: 8px;
     text-align: center;
     font-family: var(--font-mono);
+  }
+  
+  /* Ensure canvas fits within container */
+  .chart-item canvas {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Prevent extra space below canvas */
   }
   
   /* Code display */

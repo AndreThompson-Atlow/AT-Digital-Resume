@@ -107,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const terminalOverlay = document.getElementById('terminal-overlay');
       const lines = document.querySelectorAll('.terminal-content .line');
       const terminalClose = document.querySelector('.terminal-close');
+      const terminalMinimize = document.querySelector('.terminal-minimize');
+      const terminalMaximize = document.querySelector('.terminal-maximize');
       let lineIndex = 0;
       
       const urlParams = new URLSearchParams(window.location.search);
@@ -133,6 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       lines.forEach(line => { line.style.display = 'none'; });
       terminalClose.addEventListener('click', skipIntro);
+      terminalMinimize.addEventListener('click', () => terminal.classList.toggle('minimized'));
+      terminalMaximize.addEventListener('click', () => terminal.classList.remove('minimized')); // Restore if minimized
       
       function skipIntro() {
         terminalClose.removeEventListener('click', skipIntro);
@@ -795,7 +799,18 @@ document.addEventListener('DOMContentLoaded', () => {
         visualize: {
           description: 'Show data visualization panel',
           execute: () => {
-            document.getElementById('data-visualization-panel').classList.add('visible');
+            const vizPanel = document.getElementById('data-visualization-panel');
+            vizPanel.classList.add('visible');
+            
+            // Create charts only when first made visible via command
+            if (!dynamicElementsLoaded.visualizationPanel) {
+              createPieChart();
+              createBarChart();
+              createLineChart();
+              createFunctionPlot();
+              dynamicElementsLoaded.visualizationPanel = true; 
+            }
+            
             return 'Data visualization panel activated.';
           }
         },
