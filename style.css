@@ -37,6 +37,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* Add smooth scrolling */
+    scroll-behavior: smooth;
   }
   
   body {
@@ -322,12 +324,14 @@
     transition: width 0.3s;
   }
   
-  .nav-link:hover {
+  .nav-link:hover,
+  .nav-link:focus-visible {
     color: var(--secondary-color);
     text-shadow: 0 0 8px rgba(255, 204, 0, 0.7);
+    outline: none;
   }
   
-  .nav-link:hover::after {
+  .nav-link:focus-visible::after {
     width: 100%;
     background: var(--secondary-color);
     box-shadow: 0 0 8px rgba(255, 204, 0, 0.7);
@@ -539,6 +543,7 @@
     letter-spacing: 1px;
     margin-top: 1rem;
     cursor: pointer;
+    outline: none;
   }
   
   .btn::before {
@@ -553,10 +558,10 @@
     z-index: -1;
   }
   
-  .btn:hover {
+  .btn:focus-visible {
     color: var(--secondary-color);
     border-color: var(--secondary-color);
-    box-shadow: 0 0 15px rgba(0, 255, 225, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 225, 0.5), 0 0 5px var(--primary-color) inset;
     text-shadow: 0 0 5px var(--secondary-color);
   }
   
@@ -752,10 +757,12 @@
     transition: all 0.3s ease;
   }
   
-  .project-filter-btn:hover {
+  .project-filter-btn:hover,
+  .project-filter-btn:focus-visible {
     background: rgba(23, 74, 255, 0.2);
     color: var(--primary-color);
     box-shadow: 0 0 8px rgba(0, 255, 225, 0.4);
+    outline: none;
   }
   
   .project-filter-btn.active {
@@ -763,6 +770,10 @@
     color: var(--primary-color);
     border-color: var(--primary-color);
     box-shadow: 0 0 10px rgba(0, 255, 225, 0.5);
+  }
+  
+  .project-filter-btn.active:focus-visible {
+    box-shadow: 0 0 10px rgba(0, 255, 225, 0.5), 0 0 3px var(--primary-color) inset;
   }
   
   /* Project Card & Thumbnail */
@@ -874,12 +885,15 @@
     transition: transform 0.3s;
   }
   
-  .project-link:hover {
+  .project-link:hover,
+  .project-link:focus-visible {
     color: var(--secondary-color);
     text-shadow: 0 0 5px var(--secondary-color);
+    outline: none;
   }
   
-  .project-link:hover .link-icon {
+  .project-link:hover .link-icon,
+  .project-link:focus-visible .link-icon {
     transform: translateX(3px);
   }
   
@@ -927,9 +941,11 @@
     transition: all 0.3s;
   }
   
-  .contact-text a:hover {
+  .contact-text a:hover,
+  .contact-text a:focus-visible {
     color: var(--primary-color);
     text-shadow: 0 0 5px var(--primary-color);
+    outline: none;
   }
   
   /* Contact Form */
@@ -1474,10 +1490,12 @@
     .about-content,
     .contact-content {
       grid-template-columns: 1fr;
+      gap: 3rem;
     }
     
     .about-stats {
       order: -1;
+      margin-bottom: 2rem;
     }
     
     .project-card {
@@ -1552,6 +1570,11 @@
     .pagination-btn {
       padding: 6px 12px;
       font-size: 0.85rem;
+    }
+    
+    .menu-toggle:focus-visible {
+      color: var(--secondary-color);
+      outline: 1px dashed var(--secondary-color);
     }
   }
   
@@ -1826,18 +1849,23 @@
     transition: all 0.3s;
   }
   
-  .theme-toggle:hover {
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
     background: rgba(0, 255, 225, 0.2);
     box-shadow: 0 0 10px rgba(0, 255, 225, 0.4);
+    outline: none;
+    border: 1px solid var(--secondary-color);
   }
   
   .light-theme .theme-toggle {
     background: rgba(0, 102, 204, 0.1);
   }
   
-  .light-theme .theme-toggle:hover {
+  .light-theme .theme-toggle:hover,
+  .light-theme .theme-toggle:focus-visible {
     background: rgba(0, 102, 204, 0.2);
     box-shadow: 0 0 10px rgba(0, 102, 204, 0.4);
+    border: 1px solid var(--secondary-color);
   }
   
   /* Pagination Controls */
@@ -1874,13 +1902,16 @@
     z-index: -1;
   }
   
-  .pagination-btn:hover:not(:disabled) {
+  .pagination-btn:hover:not(:disabled),
+  .pagination-btn:focus-visible:not(:disabled) {
     color: var(--secondary-color);
     border-color: var(--secondary-color);
     box-shadow: 0 0 15px rgba(0, 255, 225, 0.5);
+    outline: none;
   }
   
-  .pagination-btn:hover:not(:disabled)::before {
+  .pagination-btn:hover:not(:disabled)::before,
+  .pagination-btn:focus-visible:not(:disabled)::before {
     left: 100%;
   }
   
@@ -1903,7 +1934,8 @@
     border-color: var(--primary-color);
   }
   
-  .light-theme .pagination-btn:hover:not(:disabled) {
+  .light-theme .pagination-btn:hover:not(:disabled),
+  .light-theme .pagination-btn:focus-visible:not(:disabled) {
     color: var(--secondary-color);
     border-color: var(--secondary-color);
     box-shadow: 0 0 15px rgba(0, 102, 204, 0.5);
@@ -1987,4 +2019,26 @@
     50% { text-shadow: 2px 0 #0000ff, -2px 0 #ffff00; }
     75% { text-shadow: -2px 0 #0000ff, 2px 0 #ffff00; }
     100% { text-shadow: 2px 0 #ff0000, -2px 0 #00ff00; }
+  }
+  
+  /* Add focus styles for terminal/console controls if needed */
+  .terminal-controls span:focus-visible,
+  .console-controls span:focus-visible,
+  .panel-controls span:focus-visible {
+    outline: 1px dashed var(--primary-color);
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  
+  #music-control:focus-visible {
+    background: rgba(23, 74, 255, 0.4);
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    outline: 1px solid var(--secondary-color);
+  }
+  
+  #console-input:focus-visible {
+    outline: 1px solid var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
   }
