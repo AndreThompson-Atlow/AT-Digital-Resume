@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       initResumeDownload();
       initThemeToggle();
       initKonamiCode();
+      initMusicControl();
     }
     
     // Lazy load features as they enter the viewport
@@ -1298,9 +1299,42 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initializes all dynamic UI elements (panels, dashboard)
     function initDynamicElements() {
-      initCommandConsole();
-      initDataVisualization();
-      initCodePanel();
+       initCommandConsole();
+       initDataVisualization();
+       initCodePanel();
+       
+       // Initialize Hacker Dashboard Toggle and Meters
+       const dashboard = document.getElementById('hacker-dashboard');
+       const dashboardHeader = document.querySelector('.dashboard-header');
+       if (dashboard && dashboardHeader) {
+         dashboardHeader.addEventListener('click', () => {
+           dashboard.classList.toggle('collapsed');
+           // Play click sound
+           const clickSound = document.getElementById('click-sound');
+           if (clickSound) {
+             clickSound.currentTime = 0;
+             clickSound.volume = 0.4; // Slightly louder for UI interaction
+             clickSound.play().catch(e => {});
+           }
+         });
+         
+         // Animate dashboard meters independently ONLY IF dashboard exists
+         const meters = dashboard.querySelectorAll('.meter span');
+         meters.forEach(meter => {
+           const randomDuration = 3 + Math.random() * 4; // Random duration between 3-7 seconds
+           meter.style.animation = `meterAnimation ${randomDuration}s ease-in-out infinite`;
+         });
+       }
+       
+       // Show System Popup periodically
+       setTimeout(() => {
+         showSystemPopup();
+         setInterval(() => {
+           if (Math.random() < 0.3) { // 30% chance to show popup
+             showSystemPopup();
+           }
+         }, 15000 + Math.random() * 20000); // Random interval between 15-35 seconds
+       }, 8000);
     }
     
     // Adds functionality to the resume download button
@@ -1516,5 +1550,28 @@ document.addEventListener('DOMContentLoaded', () => {
           requestAnimationFrame(updatePosition);
         });
       }
+    }
+    
+    // Initializes Music Control Toggle
+    function initMusicControl() {
+      const musicControl = document.getElementById('music-control');
+      const bgMusic = document.getElementById('bg-music');
+      
+      if (!musicControl || !bgMusic) return;
+      
+      musicControl.addEventListener('click', () => {
+        if (bgMusic.muted) {
+          bgMusic.muted = false;
+          bgMusic.volume = 0.3; // Set volume
+          musicControl.textContent = "Mute Music";
+          musicControl.style.color = "var(--secondary-color)"; // Indicate playing state
+          bgMusic.play().catch(e => console.warn('Background music play prevented by browser policy.'));
+        } else {
+          bgMusic.muted = true;
+          musicControl.textContent = "Unmute Music";
+          musicControl.style.color = "var(--primary-color)"; // Indicate muted state
+          bgMusic.pause(); // Pause when muted
+        }
+      });
     }
   });
